@@ -131,6 +131,7 @@ h3 {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* --- Header / Nav --- */
@@ -270,10 +271,13 @@ h3 {
 
 .hero-content {
     position: relative;
+    text-align: center;
 }
 
 .hero-image {
     position: relative;
+    display: flex;
+    justify-content: center;
 }
 
 .hero-image img {
@@ -286,6 +290,8 @@ h3 {
 .hero h1 {
     margin-bottom: 24px;
     max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-subtitle {
@@ -293,6 +299,8 @@ h3 {
     color: #a1a1aa;
     max-width: 600px;
     margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 1.7;
 }
 
