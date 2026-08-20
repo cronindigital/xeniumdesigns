@@ -71,7 +71,8 @@
                 </div>
 
                 <div class="contact-form">
-                    <form id="contactForm">
+                    <form id="contactForm" action="api/contact.php" method="POST" style="position:relative;">
+                            <div style="position:absolute;left:-9999px;" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
                         <div class="form-group">
                             <label for="name">Your Name</label>
                             <input type="text" id="name" name="name" placeholder="John Smith" required>
@@ -178,16 +179,51 @@
             });
         });
 
-        // Form handler (placeholder)
+        // Form handler — submits to PHP endpoint
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            var btn = this.querySelector('button[type="submit"]');
-            btn.textContent = 'Message Sent!';
-            btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-            setTimeout(function() {
-                btn.textContent = 'Send Message';
-                btn.style.background = '';
-            }, 3000);
+            var form = this;
+            var btn = form.querySelector('button[type="submit"]');
+            var origText = btn.textContent;
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            var formData = new FormData(form);
+
+            fetch('api/contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    btn.textContent = 'Message Sent!';
+                    btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                    form.reset();
+                    setTimeout(function() {
+                        btn.textContent = origText;
+                        btn.style.background = '';
+                        btn.disabled = false;
+                    }, 4000);
+                } else {
+                    btn.textContent = data.error || 'Error — try again';
+                    btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                    btn.disabled = false;
+                    setTimeout(function() {
+                        btn.textContent = origText;
+                        btn.style.background = '';
+                    }, 4000);
+                }
+            })
+            .catch(function() {
+                btn.textContent = 'Error — please email us directly';
+                btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                btn.disabled = false;
+                setTimeout(function() {
+                    btn.textContent = origText;
+                    btn.style.background = '';
+                }, 4000);
+            });
         });
     </script>
 </body>
