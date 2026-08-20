@@ -3,113 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenium Designs - Premium Dashboards</title>
-    <meta name="description" content="Xenium Designs - Beautiful, customizable dashboards for your business.">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            min-height: 100vh;
-        }
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 2rem;
-        }
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .subtitle {
-            font-size: 1.25rem;
-            color: #888;
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
-        }
-        .cta-btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-        .feature-card {
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-        }
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.75rem;
-            color: #a855f7;
-        }
-        .feature-card p {
-            color: #777;
-            line-height: 1.5;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #555;
-            font-size: 0.9rem;
-            border-top: 1px solid #1a1a1a;
-        }
-    </style>
+    <title>Xenium Designs — Custom Business Dashboards</title>
+    <meta name="description" content="Xenium Designs builds custom, automated dashboards for businesses. Turn your data into beautiful, actionable insights.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">Xenium<span>Designs</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="active">Home</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contact.html" class="btn btn-primary">Get In Touch</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero -->
     <section class="hero">
-        <h1>Xenium Designs</h1>
-        <p class="subtitle">Beautiful, customizable dashboards built for modern businesses. Get the insights you need, in the style you want.</p>
-        <a href="#dashboards" class="cta-btn">Browse Dashboards</a>
-    </section>
-
-    <section class="features">
-        <div class="feature-card">
-            <h3>Real-Time Data</h3>
-            <p>Live-updating charts and metrics that keep you informed as things happen.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Fully Customizable</h3>
-            <p>Tweak colors, layouts, and widgets to match your brand and workflow.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Easy Integration</h3>
-            <p>Connect to your existing tools and databases in minutes, not hours.</p>
+        <div class="hero-content">
+            <span class="section-label">Custom Dashboards</span>
+            <h1>Your data, <span class="gradient-text">beautifully visualised</span></h1>
+            <p class="hero-subtitle">We build automated dashboards that pull your business data from anywhere and turn it into clean, interactive charts you can actually use. No complicated software. No monthly subscriptions. Just your data, your way.</p>
+            <div class="btn-group">
+                <a href="contact.html" class="btn btn-primary">Get a Free Quote</a>
+                <a href="portfolio.html" class="btn btn-outline">See Examples</a>
+            </div>
         </div>
     </section>
 
-    <footer>
-        &copy; 2026 Xenium Designs. All rights reserved.
+    <!-- What We Do -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">What We Do</span>
+                <h2>Dashboards that <span class="gradient-text">actually work</span></h2>
+                <p>We connect to your existing tools and build a single, clean view of everything that matters to your business.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Dashboards</h3>
+                    <p>Website traffic, conversion rates, user behaviour. Pull data from Google Analytics, Matomo, or any analytics platform into one place.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Sales & Revenue</h3>
+                    <p>Track sales, revenue, refunds and trends. Connected to Stripe, Shopify, Teachable, or your payment platform of choice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Email & Marketing</h3>
+                    <p>Open rates, click rates, subscriber growth. Integrated with Mailchimp, MailerLite, ConvertKit and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Multi-Source Views</h3>
+                    <p>Combine data from multiple platforms into a single, unified dashboard. See the full picture without switching between apps.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Automated Updates</h3>
+                    <p>Your dashboard updates on a schedule automatically. Fresh data without lifting a finger. No manual exports, no spreadsheets.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Branded to You</h3>
+                    <p>Your colours, your logo, your layout. Every dashboard is built from scratch to match your brand and your workflow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section style="background: #0e0e14;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">How It Works</span>
+                <h2>From data to dashboard <span class="gradient-text">in 4 steps</span></h2>
+                <p>We handle everything. You just tell us what data you need and where it lives.</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>Tell us what you need</h3>
+                    <p>Which metrics matter to your business? What platforms do you use? We figure out the rest.</p>
+                </div>
+                <div class="step">
+                    <h3>We connect your data</h3>
+                    <p>We set up secure connections to your analytics, sales, email, and other data sources.</p>
+                </div>
+                <div class="step">
+                    <h3>We build your dashboard</h3>
+                    <p>A custom, interactive dashboard designed around your business. Charts, tables, KPIs, the lot.</p>
+                </div>
+                <div class="step">
+                    <h3>You log in and go</h3>
+                    <p>Access your dashboard from any device. It updates automatically on a schedule. Done.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section>
+        <div class="container">
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Databases needed</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Monthly subscriptions</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1</h3>
+                    <p>Single HTML file</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Always available</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Ready to see your data clearly?</h2>
+                <p>Tell us about your business and what you need. We will give you a free quote within 24 hours.</p>
+                <a href="contact.html" class="btn btn-primary">Get Your Free Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Xenium Designs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>
