@@ -257,12 +257,31 @@ h3 {
     pointer-events: none;
 }
 
-.hero-content {
+.hero-grid {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.hero-content {
+    position: relative;
+}
+
+.hero-image {
+    position: relative;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero h1 {
@@ -873,6 +892,14 @@ section {
     .hero {
         padding: 120px 24px 60px;
         min-height: auto;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-image {
+        display: none;
     }
 
     section {
