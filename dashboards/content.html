@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Stories — Content Marketing Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-cream: #faf7f2;
+            --accent-orange: #e97451;
+            --accent-orange-light: rgba(233, 116, 81, 0.12);
+            --accent-orange-hover: #d4633f;
+            --header-brown: #5c4033;
+            --header-brown-light: #7a5c4f;
+            --text-dark: #3b2f2f;
+            --text-medium: #6b5b5b;
+            --text-light: #9a8a8a;
+            --border-soft: rgba(92, 64, 51, 0.1);
+            --card-bg: #ffffff;
+            --card-shadow: 0 1px 3px rgba(92, 64, 51, 0.08), 0 4px 12px rgba(92, 64, 51, 0.04);
+            --card-shadow-hover: 0 2px 8px rgba(92, 64, 51, 0.12), 0 8px 24px rgba(92, 64, 51, 0.06);
+            --green-badge: #4caf50;
+            --green-badge-bg: rgba(76, 175, 80, 0.1);
+            --red-badge: #e74c3c;
+            --red-badge-bg: rgba(231, 76, 60, 0.1);
+            --blue-badge: #5b9bd5;
+            --blue-badge-bg: rgba(91, 155, 213, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 24px;
+            z-index: 100;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-soft);
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent-orange);
+            border-color: var(--accent-orange);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .dashboard {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 24px 28px 48px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 32px 0 8px;
+        }
+
+        .header-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--header-brown);
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* Summary strip */
+        .summary-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-soft);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .summary-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-1px);
+        }
+
+        .summary-card .label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 6px;
+        }
+
+        .summary-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--header-brown);
+            line-height: 1.1;
+        }
+
+        .summary-card .change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .change.positive {
+            color: var(--green-badge);
+            background: var(--green-badge-bg);
+        }
+
+        .change.negative {
+            color: var(--red-badge);
+            background: var(--red-badge-bg);
+        }
+
+        /* Section heading */
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--header-brown);
+            margin: 32px 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-soft);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--header-brown);
+        }
+
+        .card-header .badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: var(--accent-orange-light);
+            color: var(--accent-orange);
+        }
+
+        /* Chart containers */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 260px;
+        }
+
+        .chart-container.tall {
+            height: 300px;
+        }
+
+        /* Social stats */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .social-item {
+            text-align: center;
+            padding: 16px 10px;
+            border-radius: 10px;
+            background: var(--bg-cream);
+            border: 1px solid var(--border-soft);
+        }
+
+        .social-item .icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .social-item .platform {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .social-item .followers {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--header-brown);
+            margin: 4px 0;
+        }
+
+        .social-item .growth {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green-badge);
+        }
+
+        /* Table styles */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 0 12px 12px;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        tbody td {
+            padding: 14px 12px;
+            font-size: 13px;
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(92, 64, 51, 0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(233, 116, 81, 0.03);
+        }
+
+        .post-title {
+            font-weight: 600;
+            color: var(--header-brown);
+        }
+
+        .post-category {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--accent-orange-light);
+            color: var(--accent-orange);
+        }
+
+        .rank-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--bg-cream);
+            color: var(--text-medium);
+        }
+
+        .rank-num.top {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Donut legend */
+        .pie-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+            justify-content: center;
+        }
+
+        .pie-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        .pie-legend-item .swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .summary-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .social-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard {
+                padding: 16px 14px 40px;
+            }
+            .back-link {
+                top: 12px;
+                left: 12px;
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+            .summary-strip {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .summary-card .value {
+                font-size: 22px;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 18px;
+            }
+            .chart-container {
+                height: 220px;
+            }
+            .chart-container.tall {
+                height: 260px;
+            }
+        }
+
+        /* Date indicator */
+        .date-indicator {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-light);
+            padding-top: 32px;
+        }
+
+        .date-indicator strong {
+            color: var(--text-medium);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="../portfolio.html" class="back-link">← Back to Portfolio</a>
+
+    <div class="dashboard">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-icon">🍳</div>
+            <h1>Kitchen Stories</h1>
+            <p>Content Marketing Dashboard — Food Blog Analytics</p>
+        </div>
+
+        <!-- Summary KPIs -->
+        <div class="summary-strip">
+            <div class="summary-card">
+                <div class="label">Total Visits (30d)</div>
+                <div class="value" id="kpi-visits">—</div>
+                <span class="change positive">↑ 18.2% vs prev</span>
+            </div>
+            <div class="summary-card">
+                <div class="label">Total Followers</div>
+                <div class="value" id="kpi-followers">—</div>
+                <span class="change positive">↑ 12.5% vs prev</span>
+            </div>
+            <div class="summary-card">
+                <div class="label">Email Subscribers</div>
+                <div class="value" id="kpi-subs">—</div>
+                <span class="change positive">↑ 9.3% vs prev</span>
+            </div>
+            <div class="summary-card">
+                <div class="label">Avg. Engagement</div>
+                <div class="value">4.7%</div>
+                <span class="change positive">↑ 1.2% vs prev</span>
+            </div>
+        </div>
+
+        <!-- Blog Traffic (30 days) -->
+        <div class="section-title"><span class="dot"></span> Blog Traffic — Last 30 Days</div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Daily Page Views</h3>
+                <span class="badge">Avg. 1,280 / day</span>
+            </div>
+            <div class="chart-container tall">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Row: Social Media + Social Followers Growth -->
+        <div class="section-title"><span class="dot"></span> Social Media</div>
+        <div class="grid-2">
+
+            <!-- Social Overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Platform Overview</h3>
+                    <span class="badge">All Platforms</span>
+                </div>
+                <div class="social-grid">
+                    <div class="social-item">
+                        <div class="icon">📸</div>
+                        <div class="platform">Instagram</div>
+                        <div class="followers">24.8K</div>
+                        <div class="growth">+842 this month</div>
+                    </div>
+                    <div class="social-item">
+                        <div class="icon">📌</div>
+                        <div class="platform">Pinterest</div>
+                        <div class="followers">18.3K</div>
+                        <div class="growth">+620 this month</div>
+                    </div>
+                    <div class="social-item">
+                        <div class="icon">▶️</div>
+                        <div class="platform">YouTube</div>
+                        <div class="followers">12.1K</div>
+                        <div class="growth">+385 this month</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Growth Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Follower Growth (6 Months)</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="socialChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row: Top Posts + Content by Type -->
+        <div class="section-title"><span class="dot"></span> Content Performance</div>
+        <div class="grid-2">
+
+            <!-- Top 5 Blog Posts -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Top 5 Blog Posts</h3>
+                    <span class="badge">This Month</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Post Title</th>
+                                <th>Category</th>
+                                <th style="text-align:right">Views</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rank-num top">1</span></td>
+                                <td class="post-title">One-Pot Lemon Herb Chicken</td>
+                                <td><span class="post-category">Recipe</span></td>
+                                <td style="text-align:right;font-weight:600;">8,432</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-num top">2</span></td>
+                                <td class="post-title">Sourdough Starter: The Complete Guide</td>
+                                <td><span class="post-category">Guide</span></td>
+                                <td style="text-align:right;font-weight:600;">7,215</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-num top">3</span></td>
+                                <td class="post-title">Best Cast Iron Skillets 2026</td>
+                                <td><span class="post-category">Review</span></td>
+                                <td style="text-align:right;font-weight:600;">6,890</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-num">4</span></td>
+                                <td class="post-title">Weeknight Pasta: 15-Min Recipes</td>
+                                <td><span class="post-category">Recipe</span></td>
+                                <td style="text-align:right;font-weight:600;">5,473</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-num">5</span></td>
+                                <td class="post-title">How to Meal Prep for Beginners</td>
+                                <td><span class="post-category">Guide</span></td>
+                                <td style="text-align:right;font-weight:600;">5,102</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Content by Type Pie -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Performance by Content Type</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="pie-legend">
+                    <div class="pie-legend-item"><span class="swatch" style="background:#e97451;"></span> Recipes (42%)</div>
+                    <div class="pie-legend-item"><span class="swatch" style="background:#5c4033;"></span> Guides (31%)</div>
+                    <div class="pie-legend-item"><span class="swatch" style="background:#d4a574;"></span> Reviews (27%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Subscriber Growth -->
+        <div class="section-title"><span class="dot"></span> Email Marketing</div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Email Subscriber Growth — Last 6 Months</h3>
+                <span class="badge">Total: 6,840</span>
+            </div>
+            <div class="chart-container tall">
+                <canvas id="emailChart"></canvas>
+            </div>
+        </div>
+
+        <div class="date-indicator">
+            Data refreshed: <strong id="refreshDate"></strong>
+        </div>
+
+    </div>
+
+    <script>
+        // ── Helpers ──
+        function randomBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // ── Generate 30-day traffic data ──
+        function generateTrafficData() {
+            const labels = [];
+            const data = [];
+            const now = new Date();
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - i);
+                labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                // Traffic between 500–2000, with some realistic variance
+                const base = 1200 + (i < 10 ? 200 : 0); // recent days slightly higher
+                data.push(randomBetween(base - 500, base + 600));
+            }
+            return { labels, data };
+        }
+
+        const traffic = generateTrafficData();
+        const totalVisits = traffic.data.reduce((a, b) => a + b, 0);
+
+        // ── KPIs ──
+        document.getElementById('kpi-visits').textContent = totalVisits.toLocaleString();
+        document.getElementById('kpi-followers').textContent = '55.2K';
+        document.getElementById('kpi-subs').textContent = '6,840';
+
+        // ── Shared font config ──
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#6b5b5b';
+
+        // ── 1. Traffic Area Chart ──
+        new Chart(document.getElementById('trafficChart'), {
+            type: 'line',
+            data: {
+                labels: traffic.labels,
+                datasets: [{
+                    label: 'Page Views',
+                    data: traffic.data,
+                    borderColor: '#e97451',
+                    backgroundColor: 'rgba(233, 116, 81, 0.08)',
+                    borderWidth: 2.5,
+                    fill: true,
+                    tension: 0.35,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#e97451',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#5c4033',
+                        titleFont: { size: 12, weight: '600' },
+                        bodyFont: { size: 13, weight: '500' },
+                        padding: 10,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: ctx => ctx.parsed.y.toLocaleString() + ' visits'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 10 },
+                            maxTicksLimit: 10,
+                            maxRotation: 0,
+                        },
+                        border: { display: false },
+                    },
+                    y: {
+                        grid: { color: 'rgba(92, 64, 51, 0.06)' },
+                        ticks: {
+                            font: { size: 10 },
+                            callback: v => v >= 1000 ? (v / 1000) + 'k' : v,
+                        },
+                        border: { display: false },
+                        beginAtZero: false,
+                    }
+                }
+            }
+        });
+
+        // ── 2. Social Followers Growth Chart ──
+        const socialMonths = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+        new Chart(document.getElementById('socialChart'), {
+            type: 'line',
+            data: {
+                labels: socialMonths,
+                datasets: [
+                    {
+                        label: 'Instagram',
+                        data: [18200, 19500, 21000, 22400, 23600, 24800],
+                        borderColor: '#e97451',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2.5,
+                        tension: 0.35,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#e97451',
+                    },
+                    {
+                        label: 'Pinterest',
+                        data: [12800, 13900, 15200, 16400, 17500, 18300],
+                        borderColor: '#5c4033',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2.5,
+                        tension: 0.35,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#5c4033',
+                    },
+                    {
+                        label: 'YouTube',
+                        data: [7200, 8100, 9200, 10100, 11200, 12100],
+                        borderColor: '#d4a574',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2.5,
+                        tension: 0.35,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#d4a574',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 16,
+                            font: { size: 11, weight: '500' },
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#5c4033',
+                        titleFont: { size: 12, weight: '600' },
+                        bodyFont: { size: 12, weight: '500' },
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString()
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { font: { size: 11 } },
+                    },
+                    y: {
+                        grid: { color: 'rgba(92, 64, 51, 0.06)' },
+                        border: { display: false },
+                        ticks: {
+                            font: { size: 10 },
+                            callback: v => (v / 1000) + 'k',
+                        }
+                    }
+                }
+            }
+        });
+
+        // ── 3. Content Type Pie Chart ──
+        new Chart(document.getElementById('pieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Recipes', 'Guides', 'Reviews'],
+                datasets: [{
+                    data: [42, 31, 27],
+                    backgroundColor: ['#e97451', '#5c4033', '#d4a574'],
+                    borderWidth: 0,
+                    hoverOffset: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '62%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#5c4033',
+                        titleFont: { size: 12, weight: '600' },
+                        bodyFont: { size: 13, weight: '500' },
+                        padding: 10,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: ctx => ctx.label + ': ' + ctx.parsed + '% of traffic'
+                        }
+                    }
+                }
+            }
+        });
+
+        // ── 4. Email Subscriber Growth ──
+        new Chart(document.getElementById('emailChart'), {
+            type: 'bar',
+            data: {
+                labels: ['March', 'April', 'May', 'June', 'July', 'August'],
+                datasets: [
+                    {
+                        label: 'New Subscribers',
+                        data: [420, 510, 680, 750, 820, 940],
+                        backgroundColor: '#e97451',
+                        borderRadius: 6,
+                        barPercentage: 0.6,
+                    },
+                    {
+                        label: 'Cumulative Total',
+                        data: [4050, 4560, 5240, 5990, 6110, 6840],
+                        type: 'line',
+                        borderColor: '#5c4033',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2.5,
+                        tension: 0.35,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#5c4033',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        yAxisID: 'y1',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 16,
+                            font: { size: 11, weight: '500' },
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#5c4033',
+                        titleFont: { size: 12, weight: '600' },
+                        bodyFont: { size: 12, weight: '500' },
+                        padding: 10,
+                        cornerRadius: 8,
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { font: { size: 11 } },
+                    },
+                    y: {
+                        position: 'left',
+                        grid: { color: 'rgba(92, 64, 51, 0.06)' },
+                        border: { display: false },
+                        title: {
+                            display: true,
+                            text: 'New Subscribers',
+                            font: { size: 10, weight: '500' },
+                            color: '#9a8a8a',
+                        },
+                        ticks: { font: { size: 10 } },
+                        beginAtZero: true,
+                    },
+                    y1: {
+                        position: 'right',
+                        grid: { display: false },
+                        border: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Total Subscribers',
+                            font: { size: 10, weight: '500' },
+                            color: '#9a8a8a',
+                        },
+                        ticks: {
+                            font: { size: 10 },
+                            callback: v => (v / 1000).toFixed(1) + 'k',
+                        },
+                        beginAtZero: false,
+                    }
+                }
+            }
+        });
+
+        // ── Date stamp ──
+        document.getElementById('refreshDate').textContent =
+            new Date().toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+    </script>
+
+</body>
+</html>

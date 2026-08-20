@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Academy Pro — Course Creator Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #1a1025;
+            --bg-secondary: #251a35;
+            --bg-tertiary: #2e2042;
+            --bg-hover: #362650;
+            --accent: #a855f7;
+            --accent-light: #c084fc;
+            --accent-dark: #7c3aed;
+            --accent-glow: rgba(168, 85, 247, 0.25);
+            --text-primary: #f0eaf8;
+            --text-secondary: #b8a5d0;
+            --text-muted: #7c6a94;
+            --border: rgba(168, 85, 247, 0.15);
+            --border-light: rgba(168, 85, 247, 0.08);
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #60a5fa;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-dark); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* ── Layout ── */
+        .dashboard {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 24px 32px 48px;
+        }
+
+        /* ── Back Link ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .back-link:hover {
+            color: var(--accent-light);
+            background: var(--accent-glow);
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header-left h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .badge .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        /* ── Stats Row ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--border);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat-card:hover::before { opacity: 1; }
+        .stat-card .icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+        }
+        .stat-card .icon.purple { background: rgba(168,85,247,0.15); }
+        .stat-card .icon.green { background: rgba(52,211,153,0.15); }
+        .stat-card .icon.blue { background: rgba(96,165,250,0.15); }
+        .stat-card .icon.amber { background: rgba(251,191,36,0.15); }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* ── Chart Cards ── */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .chart-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: box-shadow 0.2s;
+        }
+        .chart-card:hover { box-shadow: var(--shadow); }
+        .chart-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .chart-card .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+        }
+        .chart-container canvas { width: 100% !important; }
+
+        /* ── Bottom Grid ── */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* ── Table ── */
+        .table-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            overflow: hidden;
+        }
+        .table-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .table-card .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        thead th {
+            text-align: left;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-size: 0.72rem;
+            padding: 0 12px 12px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        tbody td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: var(--bg-tertiary); }
+        .campaign-name {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .status-badge.sent { background: rgba(52,211,153,0.15); color: var(--success); }
+        .status-badge.draft { background: rgba(251,191,36,0.15); color: var(--warning); }
+        .status-badge.scheduled { background: rgba(96,165,250,0.15); color: var(--info); }
+        .status-badge.sending { background: rgba(168,85,247,0.15); color: var(--accent-light); }
+        .bar-cell {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .mini-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+            width: 60px;
+        }
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: var(--accent);
+        }
+
+        /* ── Recent Activity ── */
+        .activity-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+        .activity-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .activity-card .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+        .activity-list { list-style: none; }
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+        .activity-dot.enrollment { background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+        .activity-dot.revenue { background: var(--success); }
+        .activity-dot.campaign { background: var(--info); }
+        .activity-dot.review { background: var(--warning); }
+        .activity-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .activity-text strong { color: var(--text-primary); font-weight: 600; }
+        .activity-time {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 32px 0 0;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .charts-grid { grid-template-columns: 1fr; }
+            .bottom-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .dashboard { padding: 16px 16px 32px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .header { flex-direction: column; }
+            .header-left h1 { font-size: 1.4rem; }
+            .stat-card { padding: 18px; }
+            .stat-value { font-size: 1.4rem; }
+        }
+        @media (max-width: 480px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .header-right { width: 100%; }
+            .badge { flex: 1; justify-content: center; }
+        }
+
+        /* ── Utility ── */
+        .text-accent { color: var(--accent); }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        .text-info { color: var(--info); }
+        .text-muted { color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- Back Link -->
+    <a href="../portfolio.html" class="back-link">← Back to Portfolio</a>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>🎓 Code Academy Pro</h1>
+            <p>Course creator analytics &amp; marketing dashboard</p>
+        </div>
+        <div class="header-right">
+            <div class="badge"><span class="dot"></span> Teachable Connected</div>
+            <div class="badge">📊 Aug 2026</div>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="icon purple">📚</div>
+            <div class="stat-label">Total Enrollments</div>
+            <div class="stat-value">2,847</div>
+            <div class="stat-change up">▲ 18.3% vs last month</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon green">💰</div>
+            <div class="stat-label">Monthly Revenue</div>
+            <div class="stat-value">$48,250</div>
+            <div class="stat-change up">▲ 12.7% vs last month</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon blue">👥</div>
+            <div class="stat-label">Active Students</div>
+            <div class="stat-value">1,923</div>
+            <div class="stat-change up">▲ 8.1% vs last month</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon amber">⭐</div>
+            <div class="stat-label">Avg. Course Rating</div>
+            <div class="stat-value">4.72</div>
+            <div class="stat-change up">▲ 0.08 vs last month</div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-grid">
+        <!-- Daily Enrollments Line Chart -->
+        <div class="chart-card">
+            <h3>Daily Course Enrollments</h3>
+            <div class="subtitle">Last 30 days — all courses combined</div>
+            <div class="chart-container">
+                <canvas id="enrollmentsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Revenue by Course Pie -->
+        <div class="chart-card">
+            <h3>Revenue by Course</h3>
+            <div class="subtitle">Current month breakdown</div>
+            <div class="chart-container">
+                <canvas id="revenuePieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Grid: Table + Activity -->
+    <div class="bottom-grid">
+
+        <!-- Email Campaign Table -->
+        <div class="table-card">
+            <h3>📧 Email Campaign Performance</h3>
+            <div class="subtitle">MailerLite campaigns — last 30 days</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Status</th>
+                            <th>Sent</th>
+                            <th>Open Rate</th>
+                            <th>Click Rate</th>
+                            <th>Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-card">
+            <h3>🔔 Recent Activity</h3>
+            <div class="subtitle">Latest events across your courses</div>
+            <ul class="activity-list" id="activityList">
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Monthly Enrollments Bar Chart -->
+    <div class="chart-card" style="margin-top: 20px;">
+        <h3>Monthly Enrollments</h3>
+        <div class="subtitle">Last 6 months — total enrollments per month</div>
+        <div class="chart-container">
+            <canvas id="monthlyBarChart"></canvas>
+        </div>
+    </div>
+
+    <div class="footer">
+        Code Academy Pro Dashboard · Powered by Teachable &amp; MailerLite · Data refreshes every 15 minutes
+    </div>
+
+</div>
+
+<script>
+// ── Mock Data Generation ──
+
+// 30 days of enrollments (15–45/day)
+function generateDailyEnrollments() {
+    const data = [];
+    const labels = [];
+    const now = new Date();
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+        data.push(Math.floor(Math.random() * 31) + 15); // 15-45
+    }
+    return { labels, data };
+}
+
+// Revenue by course
+const revenueData = {
+    labels: ['Python Mastery', 'React Pro', 'DevOps Fundamentals', 'Data Science Bootcamp', 'Full-Stack JS'],
+    data: [14200, 11800, 8900, 7600, 5750],
+    colors: ['#a855f7', '#7c3aed', '#c084fc', '#60a5fa', '#34d399'],
+    borderColors: ['#a855f7', '#7c3aed', '#c084fc', '#60a5fa', '#34d399']
+};
+
+// Monthly enrollments (last 6 months)
+const monthlyData = {
+    labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+    data: [380, 420, 465, 510, 580, 627]
+};
+
+// Email campaigns
+const campaigns = [
+    { name: 'Welcome Series — New Students', status: 'sent', sent: 1842, openRate: 72.4, clickRate: 18.6, revenue: '$4,280' },
+    { name: 'Python Mastery — Course Launch', status: 'sent', sent: 2156, openRate: 65.8, clickRate: 22.1, revenue: '$8,920' },
+    { name: 'React Pro — Mid-Course Check-in', status: 'sent', sent: 890, openRate: 58.3, clickRate: 14.7, revenue: '$1,640' },
+    { name: 'Data Science — Free Webinar Invite', status: 'sent', sent: 3210, openRate: 48.9, clickRate: 11.2, revenue: '$2,150' },
+    { name: 'DevOps — Early Bird Discount', status: 'sent', sent: 1567, openRate: 61.2, clickRate: 19.8, revenue: '$6,340' },
+    { name: 'Full-Stack JS — Student Spotlight', status: 'sent', sent: 980, openRate: 54.7, clickRate: 13.4, revenue: '$980' },
+    { name: 'Back-to-School Campaign', status: 'scheduled', sent: 2800, openRate: 0, clickRate: 0, revenue: '$0' },
+    { name: 'Referral Program Announcement', status: 'sending', sent: 1240, openRate: 42.1, clickRate: 8.9, revenue: '$320' },
+    { name: 'Course Bundle Promo', status: 'draft', sent: 0, openRate: 0, clickRate: 0, revenue: '$0' },
+    { name: 'Student Success Stories — Aug', status: 'draft', sent: 0, openRate: 0, clickRate: 0, revenue: '$0' }
+];
+
+// Activity feed
+const activities = [
+    { type: 'enrollment', text: '<strong>Sarah M.</strong> enrolled in <strong>Python Mastery</strong>', time: '2 min ago' },
+    { type: 'revenue', text: '<strong>$249</strong> payment received — <strong>React Pro</strong>', time: '8 min ago' },
+    { type: 'campaign', text: 'Email campaign <strong>"DevOps Early Bird"</strong> sent to 1,567 subscribers', time: '1 hr ago' },
+    { type: 'review', text: '<strong>James K.</strong> left a ★★★★★ review on <strong>Data Science Bootcamp</strong>', time: '2 hrs ago' },
+    { type: 'enrollment', text: '<strong>12 new students</strong> enrolled today — trending up!', time: '3 hrs ago' },
+    { type: 'revenue', text: '<strong>$1,245</strong> in bundle purchases today', time: '4 hrs ago' },
+    { type: 'campaign', text: '<strong>"Referral Program"</strong> campaign is now sending', time: '5 hrs ago' },
+    { type: 'enrollment', text: '<strong>David L.</strong> completed <strong>Full-Stack JS</strong> — certificate issued', time: '6 hrs ago' }
+];
+
+// ── Chart.js Setup ──
+
+Chart.defaults.color = '#7c6a94';
+Chart.defaults.font.family = 'Inter, sans-serif';
+Chart.defaults.font.size = 11;
+
+// 1) Daily Enrollments — Line Chart
+const dailyData = generateDailyEnrollments();
+const enrollmentsCtx = document.getElementById('enrollmentsChart').getContext('2d');
+
+const gradient = enrollmentsCtx.createLinearGradient(0, 0, 0, 300);
+gradient.addColorStop(0, 'rgba(168, 85, 247, 0.35)');
+gradient.addColorStop(1, 'rgba(168, 85, 247, 0.01)');
+
+new Chart(enrollmentsCtx, {
+    type: 'line',
+    data: {
+        labels: dailyData.labels,
+        datasets: [{
+            label: 'Enrollments',
+            data: dailyData.data,
+            borderColor: '#a855f7',
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: '#a855f7',
+            pointHoverBorderColor: '#fff',
+            pointHoverBorderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 2.2,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#2e2042',
+                titleColor: '#f0eaf8',
+                bodyColor: '#b8a5d0',
+                borderColor: 'rgba(168,85,247,0.3)',
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 10,
+                displayColors: false,
+                callbacks: {
+                    label: function(ctx) {
+                        return `  ${ctx.parsed.y} enrollments`;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                grid: { color: 'rgba(168,85,247,0.06)', drawBorder: false },
+                ticks: { maxRotation: 0, maxTicksLimit: 10 }
+            },
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(168,85,247,0.06)', drawBorder: false },
+                ticks: { stepSize: 10 }
+            }
+        }
+    }
+});
+
+// 2) Revenue by Course — Doughnut
+const revenueCtx = document.getElementById('revenuePieChart').getContext('2d');
+new Chart(revenueCtx, {
+    type: 'doughnut',
+    data: {
+        labels: revenueData.labels,
+        datasets: [{
+            data: revenueData.data,
+            backgroundColor: revenueData.colors,
+            borderColor: 'rgba(37, 26, 53, 0.8)',
+            borderWidth: 3,
+            hoverOffset: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        cutout: '62%',
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 14,
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                    font: { size: 11 }
+                }
+            },
+            tooltip: {
+                backgroundColor: '#2e2042',
+                titleColor: '#f0eaf8',
+                bodyColor: '#b8a5d0',
+                borderColor: 'rgba(168,85,247,0.3)',
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 10,
+                callbacks: {
+                    label: function(ctx) {
+                        const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                        const pct = ((ctx.parsed / total) * 100).toFixed(1);
+                        return `  ${ctx.label}: $${ctx.parsed.toLocaleString()} (${pct}%)`;
+                    }
+                }
+            }
+        }
+    }
+});
+
+// 3) Monthly Enrollments — Bar Chart
+const monthlyCtx = document.getElementById('monthlyBarChart').getContext('2d');
+
+const monthlyGradient = monthlyCtx.createLinearGradient(0, 0, 0, 250);
+monthlyGradient.addColorStop(0, '#a855f7');
+monthlyGradient.addColorStop(1, '#7c3aed');
+
+new Chart(monthlyCtx, {
+    type: 'bar',
+    data: {
+        labels: monthlyData.labels,
+        datasets: [{
+            label: 'Enrollments',
+            data: monthlyData.data,
+            backgroundColor: monthlyGradient,
+            borderRadius: 8,
+            borderSkipped: false,
+            barThickness: 48,
+            hoverBackgroundColor: '#c084fc'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 3,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#2e2042',
+                titleColor: '#f0eaf8',
+                bodyColor: '#b8a5d0',
+                borderColor: 'rgba(168,85,247,0.3)',
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 10,
+                displayColors: false,
+                callbacks: {
+                    label: function(ctx) {
+                        return `  ${ctx.parsed.y} enrollments`;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: { font: { weight: '600' } }
+            },
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(168,85,247,0.06)', drawBorder: false },
+                ticks: { stepSize: 100 }
+            }
+        }
+    }
+});
+
+// ── Email Campaign Table ──
+const tbody = document.getElementById('campaignTableBody');
+campaigns.forEach(c => {
+    const openBarWidth = c.openRate;
+    const clickBarWidth = c.clickRate * 3; // scale for visual
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td class="campaign-name">${c.name}</td>
+        <td><span class="status-badge ${c.status}">${c.status}</span></td>
+        <td>${c.sent > 0 ? c.sent.toLocaleString() : '—'}</td>
+        <td>
+            <div class="bar-cell">
+                <div class="mini-bar"><div class="mini-bar-fill" style="width:${openBarWidth}%;background:var(--accent)"></div></div>
+                <span>${c.openRate > 0 ? c.openRate + '%' : '—'}</span>
+            </div>
+        </td>
+        <td>
+            <div class="bar-cell">
+                <div class="mini-bar"><div class="mini-bar-fill" style="width:${clickBarWidth}%;background:var(--info)"></div></div>
+                <span>${c.clickRate > 0 ? c.clickRate + '%' : '—'}</span>
+            </div>
+        </td>
+        <td style="font-weight:600;color:var(--text-primary)">${c.revenue}</td>
+    `;
+    tbody.appendChild(tr);
+});
+
+// ── Activity Feed ──
+const actList = document.getElementById('activityList');
+activities.forEach(a => {
+    const li = document.createElement('li');
+    li.className = 'activity-item';
+    li.innerHTML = `
+        <div class="activity-dot ${a.type}"></div>
+        <div>
+            <div class="activity-text">${a.text}</div>
+            <div class="activity-time">${a.time}</div>
+        </div>
+    `;
+    actList.appendChild(li);
+});
+
+</script>
+</body>
+</html>
