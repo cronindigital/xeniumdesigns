@@ -987,6 +987,18 @@ section {
     padding: 0 24px;
 }
 
+.article-hero-img {
+    margin: 0 -24px 40px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.article-hero-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .article-content h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
     margin: 48px 0 16px;
