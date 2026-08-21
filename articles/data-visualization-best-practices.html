@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualisation Best Practices — Charts, Colours &amp; Layouts | Xenium Designs</title>
+    <meta name="description" content="Data visualisation best practices for business dashboards. Learn how to choose chart types, pick colours, layout your data, and tell a clear story with your numbers.">
+    <meta name="author" content="Xenium Designs">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Data Visualisation Best Practices — Xenium Designs">
+    <meta property="og:description" content="Learn how to choose chart types, pick colours, layout your data, and tell a clear story with your business dashboards.">
+    <meta property="og:image" content="https://xeniumdesigns.com/images/og-image.png">
+    <meta property="og:url" content="https://xeniumdesigns.com/articles/data-visualization-best-practices.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Xenium Designs">
+    <meta property="article:published_time" content="2026-08-21">
+    <meta property="article:author" content="Xenium Designs">
+    <meta property="article:section" content="Best Practices">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Data Visualisation Best Practices — Xenium Designs">
+    <meta name="twitter:description" content="Learn how to choose chart types, pick colours, layout your data, and tell a clear story with your business dashboards.">
+    <meta name="twitter:image" content="https://xeniumdesigns.com/images/og-image.png">
+
+    <!-- Schema.org Article -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Data Visualisation Best Practices: Charts, Colours, and Layouts for Business Dashboards",
+  "description": "A practical guide to data visualisation best practices for business dashboards. Covers chart type selection, colour choices, layout, storytelling with data, and common mistakes to avoid.",
+  "author": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://xeniumdesigns.com/images/logo.png"
+    }
+  },
+  "datePublished": "2026-08-21",
+  "dateModified": "2026-08-21",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://xeniumdesigns.com/articles/data-visualization-best-practices.html"
+  },
+  "keywords": ["data visualisation best practices", "dashboard design", "chart design", "business dashboards", "data storytelling"]
+}
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is data visualisation best practice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Data visualisation best practice means designing charts and dashboards that communicate clearly and accurately. It includes choosing the right chart type for your data, using colour intentionally, keeping layouts clean, and removing anything that does not help the viewer understand the numbers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What chart type should I use for my dashboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use line charts for trends over time, bar charts for comparing categories, pie charts sparingly for parts of a whole (ideally five or fewer slices), and scatter plots for showing relationships between two variables. The best chart type depends on what question you are trying to answer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many colours should a dashboard use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A good business dashboard uses three to five colours maximum. One primary colour for key metrics, one or two accent colours for comparisons, and a neutral shade for background and secondary elements. More than five colours makes the dashboard harder to read."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What makes a dashboard easy to read?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A dashboard is easy to read when it has clear headings, consistent spacing, limited text, and a logical layout. The most important metrics should be at the top left, charts should have descriptive titles, and there should be enough white space that nothing feels cramped."
+      }
+    }
+  ]
+}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="../index.html" class="logo">Xenium<span>Designs</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="../index.html">Home</a>
+                <a href="../examples.html">Examples</a>
+                <a href="../articles.html">Articles</a>
+                <a href="../contact.html" class="btn btn-primary">Get In Touch</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Best Practices</span>
+            <h1>Data visualisation best practices <span class="gradient-text">for business dashboards</span></h1>
+            <p>How to design charts, pick colours, and lay out your data so people actually understand it.</p>
+        </div>
+    </div>
+
+    <!-- Article Content -->
+    <article>
+        <div class="article-content">
+
+            <div class="article-meta">
+                <span>Xenium Designs</span>
+                <span>21 August 2026</span>
+                <span>10 min read</span>
+            </div>
+
+            <p>Most business owners have plenty of data. What they lack is a way to see it that makes sense. A well designed dashboard turns messy spreadsheets and scattered analytics into something you can glance at and immediately understand. That is what data visualisation best practice is about: making your numbers clear, not just making them pretty.</p>
+
+            <p>Whether you are building your own charts or working with a dashboard developer, these principles will help you get more from every screen of data.</p>
+
+            <h2>1. Start with the question, not the chart</h2>
+
+            <p>Before you pick a chart type or choose a colour palette, ask yourself one thing: <strong>what question am I trying to answer?</strong></p>
+
+            <p>Every metric on your dashboard should exist because it answers a specific business question:</p>
+
+            <ul>
+                <li><strong>"How is revenue trending this quarter?"</strong> That is a line chart.</li>
+                <li><strong>"Which marketing channel brings the most leads?"</strong> That is a bar chart.</li>
+                <li><strong>"What percentage of revenue comes from each product?"</strong> That might be a pie chart (but keep reading).</li>
+            </ul>
+
+            <p>If a chart does not answer a clear question, it probably does not belong on the dashboard. Cut it. Every extra widget is visual noise that makes the important stuff harder to find.</p>
+
+            <div class="tip-box">
+                <h4>Quick rule</h4>
+                <p>Write the business question above each chart as a temporary label while you build. If you cannot write a clear question, the chart probably should not exist.</p>
+            </div>
+
+            <h2>2. Choose the right chart type</h2>
+
+            <p>Chart selection is the foundation of data visualisation best practices. The wrong chart type does not just look bad, it actively misleads. Here is a straightforward guide:</p>
+
+            <h3>Line charts: for trends over time</h3>
+            <p>Use line charts when you want to show how something changes over days, weeks, months, or years. They are the go-to for revenue trends, traffic growth, and subscriber counts. Keep lines to three or fewer per chart to avoid a tangled mess.</p>
+
+            <h3>Bar charts: for comparing categories</h3>
+            <p>Need to show which product sold most, which channel performed best, or how this month compares to last? Bar charts make comparisons immediate and obvious. Sort bars by value (largest first) unless there is a natural order like months or days.</p>
+
+            <h3>Pie charts: use sparingly</h3>
+            <p>Pie charts have a bad reputation, but they have their place. They work when you are showing parts of a single whole and you have five or fewer slices. Any more than that and a bar chart becomes easier to read. Never use 3D pie charts. They distort proportions.</p>
+
+            <h3>Scatter plots: for relationships</h3>
+            <p>Want to see if ad spend correlates with revenue, or if customer age relates to order value? Scatter plots reveal patterns that other charts miss. They are less common in business dashboards but powerful when used correctly.</p>
+
+            <h3>Single number cards (KPI widgets)</h3>
+            <p>Sometimes the most effective visualisation is no chart at all. A single number with a label, an up or down arrow, and a percentage change tells the story instantly. Use these for your most important top-line metrics: total revenue, total customers, conversion rate.</p>
+
+            <h2>3. Use colour with intention</h2>
+
+            <p>Colour is one of the most powerful tools in data visualisation and one of the most abused. A few rules that keep your dashboards professional and readable:</p>
+
+            <ul>
+                <li><strong>Stick to three to five colours.</strong> More than that and your dashboard starts to look like a child's painting. One primary colour, one or two accents, and a neutral for backgrounds and secondary elements.</li>
+                <li><strong>Be consistent.</strong> If blue means revenue on one chart, it should mean revenue on every chart. Never reuse the same colour for different metrics.</li>
+                <li><strong>Consider colour blindness.</strong> Roughly 8% of men and 0.5% of women have some form of colour vision deficiency. Avoid relying solely on red vs green to show good vs bad. Use patterns, labels, or different shades as well.</li>
+                <li><strong>Use muted backgrounds.</strong> Dark dashboards look great with dark grey backgrounds (#111118 or similar). Light dashboards work with soft whites and light greys. The background should recede, not compete with your data.</li>
+                <li><strong>Highlight what matters.</strong> Use a bright or saturated colour for the metric you want people to notice first. Everything else should be quieter.</li>
+            </ul>
+
+            <h2>4. Layout tells a story</h2>
+
+            <p>The arrangement of charts on your dashboard is not random. People read screens the same way they read pages: top to bottom, left to right. Use this to guide attention.</p>
+
+            <ul>
+                <li><strong>Top left is prime real estate.</strong> Put your single most important number here. Total revenue, total customers, or whatever metric defines success for your business.</li>
+                <li><strong>Group related metrics.</strong> Revenue, orders, and average order value belong together. Email opens, clicks, and subscriber growth belong together. Do not scatter related data across the screen.</li>
+                <li><strong>Use white space generously.</strong> Cramped dashboards are hard to scan. Give each chart room to breathe. If it looks crowded, it probably needs fewer charts or a larger canvas.</li>
+                <li><strong>Keep consistent spacing.</strong> The gap between charts should be the same everywhere. Inconsistent spacing makes a dashboard feel amateur. We use 24px gaps between cards as a standard.</li>
+            </ul>
+
+            <div class="tip-box">
+                <h4>The five second test</h4>
+                <p>Show someone your dashboard for five seconds, then hide it. Ask them: "What is the most important number?" If they cannot answer, your layout needs work.</p>
+            </div>
+
+            <h2>5. Label everything clearly</h2>
+
+            <p>Chart titles, axis labels, and data labels are not optional decoration. They are how people understand what they are looking at.</p>
+
+            <ul>
+                <li><strong>Every chart needs a descriptive title.</strong> "Revenue" is vague. "Monthly revenue, 2026" is clear. Better: "Monthly revenue vs same month last year".</li>
+                <li><strong>Label your axes.</strong> The Y axis should show the unit: GBP, percentage, count, or whatever applies. Without it, the numbers are meaningless.</li>
+                <li><strong>Format numbers for readability.</strong> Use £1,200 instead of 1200. Use 45.2% instead of 0.452. Round large numbers: 12.3k instead of 12,347. Small formatting choices make a big difference in scanability.</li>
+                <li><strong>Add context where needed.</strong> "+12% vs last month" next to a number tells the viewer whether that number is good or bad without them having to remember last month's figure.</li>
+            </ul>
+
+            <h2>6. Avoid common pitfalls</h2>
+
+            <p>Even well intentioned dashboards fall into traps. Here are the most common ones we see:</p>
+
+            <ul>
+                <li><strong>Too many metrics.</strong> If your dashboard has 30 charts, none of them matter. Focus on the five to ten numbers that actually drive decisions.</li>
+                <li><strong>3D charts.</strong> They look impressive but distort data. A 3D pie chart makes front slices look larger than back slices. Stick to flat, 2D visuals.</li>
+                <li><strong>Dual Y axes.</strong> Two different scales on the same chart are confusing. If you need to compare two different metrics, use two separate charts side by side.</li>
+                <li><strong>Truncated Y axes.</strong> Starting a bar chart at 50 instead of 0 makes a 10% difference look like a 50% difference. Always start bar chart axes at zero.</li>
+                <li><strong>Animations and GIFs.</strong> They slow down dashboards and add no analytical value. Static charts load faster and are easier to read.</li>
+                <li><strong>Decorative elements.</strong> Background images, gradients behind charts, and fancy borders distract from data. Let the data be the visual interest.</li>
+            </ul>
+
+            <h2>7. Design for scanning, not reading</h2>
+
+            <p>People do not read dashboards word by word. They scan. Your job is to make the most important information jump out in a glance.</p>
+
+            <blockquote>
+                <p>"The goal of a dashboard is not to present all the data. It is to present the right data so clearly that the decision is obvious."</p>
+            </blockquote>
+
+            <p>A few techniques that support scanning:</p>
+
+            <ul>
+                <li><strong>Use size hierarchy.</strong> The most important number on the screen should be the largest. Secondary metrics should be smaller. This creates a natural reading order without requiring labels like "important" and "less important".</li>
+                <li><strong>Use colour to highlight.</strong> If one number needs attention, make it stand out with a different colour or a background highlight. Everything else stays neutral.</li>
+                <li><strong>Group with cards or containers.</strong> A subtle border or background colour around a group of related metrics helps the eye parse the layout quickly. We use dark card backgrounds (#111118) with subtle borders (#1e1e2a) for this reason.</li>
+                <li><strong>Limit text.</strong> Dashboards are not articles. Use short labels, brief titles, and numbers. If you need a paragraph to explain a chart, simplify the chart.</li>
+            </ul>
+
+            <h2>8. Make it responsive</h2>
+
+            <p>Your dashboard will not always be viewed on a 27-inch monitor. Business owners check metrics on phones during school runs, on tablets at coffee shops, and on laptops between meetings.</p>
+
+            <ul>
+                <li><strong>Stack on mobile.</strong> A four-column grid should become two columns on tablets and one column on phones.</li>
+                <li><strong>Resize charts.</strong> Charts that look perfect on desktop may be too small on a phone. Use responsive chart libraries that scale cleanly.</li>
+                <li><strong>Prioritise for small screens.</strong> On mobile, show only the most critical metrics. Hide secondary charts behind a "show more" toggle if needed.</li>
+                <li><strong>Test on actual devices.</strong> Emulators are not the same as real screens. Check your dashboard on a phone and a tablet before calling it done.</li>
+            </ul>
+
+            <h2>9. Keep it updated</h2>
+
+            <p>A dashboard with stale data is worse than no dashboard at all. It gives a false sense of awareness. If your dashboard shows last month's revenue when you think it is this month's, you are making decisions on wrong information.</p>
+
+            <p>At Xenium Designs, we build automated data collection into every dashboard. Python scripts pull data on a schedule, store it in a lightweight database, and your dashboard refreshes automatically. No manual exports. No copy-pasting from spreadsheets. Your data is always current.</p>
+
+            <h2>10. Iterate and improve</h2>
+
+            <p>Your first dashboard will not be perfect, and that is fine. The best dashboards evolve over time as you learn what your team actually uses and what they ignore.</p>
+
+            <ul>
+                <li><strong>Review monthly.</strong> Which charts does everyone look at? Which ones are ignored? Remove the unused ones and give that space to something more useful.</li>
+                <li><strong>Ask for feedback.</strong> The people using the dashboard every day will have opinions. Listen to them.</li>
+                <li><strong>Add metrics gradually.</strong> Start with five key numbers. Add more only when there is a clear need. A lean dashboard beats a bloated one every time.</li>
+            </ul>
+
+            <div class="tip-box">
+                <h4>Need a hand?</h4>
+                <p>Building a dashboard that follows these data visualisation best practices takes time and experience. We design and build custom dashboards for businesses of all sizes. <a href="../contact.html" style="color: #22c55e; text-decoration: underline;">Get in touch for a free consultation</a> and we will figure out the right approach for your data.</p>
+            </div>
+
+            <!-- FAQ Section -->
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>What is data visualisation best practice?</h3>
+                <p>Data visualisation best practice means designing charts and dashboards that communicate clearly and accurately. It includes choosing the right chart type for your data, using colour intentionally, keeping layouts clean, and removing anything that does not help the viewer understand the numbers.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What chart type should I use for my dashboard?</h3>
+                <p>Use line charts for trends over time, bar charts for comparing categories, pie charts sparingly for parts of a whole (ideally five or fewer slices), and scatter plots for showing relationships between two variables. The best chart type depends on what question you are trying to answer.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How many colours should a dashboard use?</h3>
+                <p>A good business dashboard uses three to five colours maximum. One primary colour for key metrics, one or two accent colours for comparisons, and a neutral shade for background and secondary elements. More than five colours makes the dashboard harder to read.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What makes a dashboard easy to read?</h3>
+                <p>A dashboard is easy to read when it has clear headings, consistent spacing, limited text, and a logical layout. The most important metrics should be at the top left, charts should have descriptive titles, and there should be enough white space that nothing feels cramped.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How often should I update my dashboard?</h3>
+                <p>It depends on your business. Sales and traffic dashboards often update daily or even in real time. Financial dashboards might update weekly or monthly. The key is that the data should always be current enough for the decisions you are making with it.</p>
+            </div>
+
+        </div>
+    </article>
+
+    <!-- Related / CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Want a dashboard that follows these principles?</h2>
+                <p>We build custom dashboards with clean layouts, the right chart types, and automated data. Designed for how you actually work.</p>
+                <a href="../contact.html" class="btn btn-primary">Get In Touch &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Xenium Designs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <a href="../examples.html">Examples</a>
+                <a href="../articles.html">Articles</a>
+                <a href="../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+    </script>
+    <!-- Matomo -->
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://analytics.cronindigitalindustries.com/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '5']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript><p><img src="https://analytics.cronindigitalindustries.com/matomo.php?idsite=5&rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo -->
+</body>
+</html>
