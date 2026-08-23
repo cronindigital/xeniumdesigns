@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /dashboards/
 Sitemap: https://xeniumdesigns.com/sitemap.xml
