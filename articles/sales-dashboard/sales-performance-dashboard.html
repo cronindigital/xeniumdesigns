@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Performance Dashboard: What to Track and How | Xenium Designs</title>
+    <link rel="canonical" href="https://xeniumdesigns.com/articles/sales-dashboard/sales-performance-dashboard.html">
+    <meta name="description" content="A sales performance dashboard shows your key sales metrics in one view. Learn what to track, how to build one, and common mistakes to avoid.">
+    <meta name="author" content="Xenium Designs">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sales Performance Dashboard | Xenium Designs">
+    <meta property="og:description" content="What to track on a sales performance dashboard — key metrics, how to build one, common mistakes, and a practical getting-started guide.">
+    <meta property="og:image" content="https://xeniumdesigns.com/images/og-image.png">
+    <meta property="og:url" content="https://xeniumdesigns.com/articles/sales-dashboard/sales-performance-dashboard.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Xenium Designs">
+    <meta property="article:published_time" content="2026-08-25">
+    <meta property="article:author" content="Xenium Designs">
+    <meta property="article:section" content="Sales Dashboards">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sales Performance Dashboard | Xenium Designs">
+    <meta name="twitter:description" content="What to track on a sales performance dashboard — key metrics, how to build one, common mistakes, and a practical getting-started guide.">
+    <meta name="twitter:image" content="https://xeniumdesigns.com/images/og-image.png">
+
+    <!-- Schema.org Article -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Sales Performance Dashboard: What to Track and How",
+  "description": "What to track on a sales performance dashboard — key metrics, how to build one, common mistakes, and a practical getting-started guide.",
+  "author": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://xeniumdesigns.com/images/logo.png"
+    }
+  },
+  "datePublished": "2026-08-25",
+  "dateModified": "2026-08-25",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://xeniumdesigns.com/articles/sales-dashboard/sales-performance-dashboard.html"
+  },
+  "keywords": ["sales performance dashboard", "sales dashboard", "revenue tracking", "sales metrics", "pipeline dashboard"]
+}
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a sales performance dashboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A sales performance dashboard is a visual tool that displays your key sales metrics — revenue, conversion rates, pipeline value, and deal progress — in a single view. It pulls data from your CRM, payment processor, and other tools so you can track performance without logging into multiple apps."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What metrics should be on a sales dashboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The core metrics are revenue (by period and comparison), conversion rate, average order value, customer acquisition cost, pipeline value, and sales cycle length. The exact mix depends on your business model, but these six cover most sales teams."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should I update my sales dashboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your dashboard should update automatically — either in real time or on a daily schedule. If you are manually updating it, you are using a spreadsheet, not a dashboard. The whole point is that the data refreshes without your intervention."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I build a sales dashboard in Google Sheets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can, but it has significant limitations. Google Sheets requires manual data entry, does not update automatically, and makes it difficult to visualise trends over time. It works for one-off analysis but not for ongoing sales tracking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a sales performance dashboard different from a KPI dashboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A sales performance dashboard focuses specifically on revenue and sales metrics. A KPI dashboard is broader and can include metrics from marketing, operations, finance, and customer service. The main difference is scope — sales dashboards are a subset of KPI dashboards."
+      }
+    }
+  ]
+}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="../../index.html" class="logo">Xenium<span>Designs</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="../../index.html">Home</a> &rsaquo; 
+            <a href="../../articles.html">Articles</a> &rsaquo; 
+            <a href="../sales-dashboard/">Sales Dashboards</a> &rsaquo; 
+            <span>Sales Performance Dashboard</span>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Sales Dashboards</span>
+            <h1>Sales Performance Dashboard: What to Track</h1>
+            <p>Key metrics, how to build one, common mistakes, and a practical getting-started guide.</p>
+        </div>
+    </div>
+
+    <!-- Article Content -->
+    <article>
+        <div class="article-content">
+
+            <div class="article-meta">
+                <span>Sales Dashboards</span>
+                <span>Xenium Designs</span>
+                <span>25 August 2026</span>
+                <span>8 min read</span>
+            </div>
+
+            <div class="article-hero-img">
+                <img src="../../images/article-sales-performance.png" alt="A sales performance dashboard showing revenue trends, conversion rates, and pipeline metrics on a desktop screen" width="780" height="400">
+            </div>
+
+            <p>A sales performance dashboard is a visual tool that shows how your sales team and revenue are performing — all in one view. Instead of digging through your CRM or waiting for end-of-month reports, you see the numbers that matter every time you open it.</p>
+
+            <p>Whether you sell through a website, a sales team, or a combination of both, a sales performance dashboard answers the most important question in your business: "Are we selling enough, and how do we sell more?"</p>
+
+            <h2>What should a sales performance dashboard track?</h2>
+
+            <p>Every business is different, but the best sales dashboards track a core set of metrics that connect directly to revenue. Here are the key ones:</p>
+
+            <h3>Revenue</h3>
+            <p>Total revenue this month, this quarter, and year-to-date. Compared to the same period last year. This is the headline number and it should be impossible to miss on your dashboard.</p>
+
+            <h3>Conversion rate</h3>
+            <p>Of the people who enter your sales process — whether that means visiting your website, booking a call, or getting a quote — how many actually buy? A low conversion rate means you are losing potential customers somewhere in the funnel.</p>
+
+            <h3>Average order value (AOV)</h3>
+            <p>How much does each customer spend on average? Increasing AOV by even a small percentage can have a bigger impact on revenue than acquiring more customers, because it costs nothing extra to deliver.</p>
+
+            <h3>Customer acquisition cost (CAC)</h3>
+            <p>How much do you spend on marketing and sales to get each new customer? If your CAC is climbing while your revenue stays flat, you have a profitability problem that a dashboard will make visible immediately.</p>
+
+            <h3>Deal pipeline</h3>
+            <p>What is in your pipeline right now? How many deals are at each stage? What is the total value of deals expected to close this month? Pipeline visibility is one of the primary reasons to build a sales dashboard.</p>
+
+            <h3>Sales cycle length</h3>
+            <p>How long does it take from first contact to closed deal? If your cycle is getting longer, it might indicate pricing issues, process inefficiencies, or a mismatch between your marketing and your actual customer.</p>
+
+            <h2>How to build a sales performance dashboard</h2>
+
+            <p>You have three options, each suited to different situations:</p>
+
+            <h3>Start with your existing tools</h3>
+            <p>Most CRMs (HubSpot, Salesforce, Pipedrive) have built-in dashboards. These are a good starting point if your sales data lives in one platform. The limitation is that they only show data from that platform — you cannot easily combine it with website analytics, payment data, or email metrics.</p>
+
+            <h3>Use a BI platform</h3>
+            <p>Tools like Looker Studio, Databox, or Klipfolio let you connect multiple data sources. This is a step up from CRM dashboards because you can combine sales data with marketing data, giving you a fuller picture of what is driving revenue.</p>
+
+            <h3>Build a custom dashboard</h3>
+            <p>A custom-built dashboard connects to your exact data sources and is designed around how you make decisions. If your sales data comes from a CRM, a payment processor, and a website, a custom dashboard combines all three without you having to manually reconcile anything. For most growing businesses, this is the most practical long-term solution.</p>
+
+            <div class="tip-box">
+                <h4>Start with these questions</h4>
+                <p>Before building anything, write down the three questions you ask most often about your sales. "How are we tracking this month?" "Which channel brings the best customers?" "What is our pipeline worth?" A good sales dashboard answers those questions in under ten seconds.</p>
+            </div>
+
+            <h2>Common mistakes to avoid</h2>
+
+            <p>These are the pitfalls that turn a potentially useful sales dashboard into an expensive wall decoration:</p>
+
+            <ul>
+                <li><strong>Tracking too many metrics.</strong> Twenty charts on one screen means you look at none of them. Pick the five to seven metrics that directly drive decisions and leave the rest for detailed reports.</li>
+                <li><strong>Ignoring context.</strong> A revenue number without comparison (last month, last year, target) is meaningless. Always show trends and comparisons, not just isolated figures.</li>
+                <li><strong>Building it and forgetting it.</strong> A dashboard needs to evolve. Review it monthly and ask: what am I not looking at? What question can I not answer? Adjust accordingly.</li>
+                <li><strong>Mixing leading and lagging indicators.</strong> Revenue is a lagging indicator — it tells you what already happened. Include leading indicators like pipeline value and conversion rates that tell you what is about to happen.</li>
+                <li><strong>Not sharing it.</strong> A dashboard that only one person sees limits its impact. Make sure your team has access and knows how to read it.</li>
+            </ul>
+
+            <h2>Getting started</h2>
+
+            <p>You do not need to build everything at once. Here is a practical approach:</p>
+
+            <ol>
+                <li><strong>Pick your top five metrics.</strong> Revenue, conversion rate, AOV, CAC, and pipeline value cover most businesses.</li>
+                <li><strong>Identify your data sources.</strong> Where does each metric live? CRM, payment processor, website analytics?</li>
+                <li><strong>Choose your tool.</strong> Start with what you have (CRM dashboard or Looker Studio) and upgrade to a custom build when you outgrow it.</li>
+                <li><strong>Set a review cadence.</strong> Look at the dashboard every morning for the first two weeks. After that, weekly is fine for most businesses.</li>
+                <li><strong>Refine.</strong> After a month, remove anything you never look at and add any questions you still cannot answer.</li>
+            </ol>
+
+            <p>A sales performance dashboard is not about fancy technology. It is about seeing the numbers that drive your revenue so you can act on them faster. If you are ready to move from guesswork to clarity, <a href="../../contact.html">get in touch</a> and we will help you build one.</p>
+
+            <p>For more on choosing the right metrics, see our guide to <a href="../kpi-dashboard/kpi-dashboard-examples.html">KPI dashboard examples</a> across industries.</p>
+
+
+            <!-- Related Articles -->
+            <div class="related-articles">
+                <h3>Related Articles</h3>
+                <ul>
+                    <li><a href="../sales-dashboard/">Back to Sales Dashboards</a></li>
+                    <li><a href="sales-kpi-dashboard.html">Sales KPI Dashboard</a></li>
+                    <li><a href="../business-intelligence-dashboard/what-is-a-business-intelligence-dashboard.html">What Is a Business Intelligence Dashboard?</a></li>
+                    <li><a href="../kpi-dashboard/kpi-dashboard-examples.html">KPI Dashboard Examples</a></li>
+                    <li><a href="../kpis-small-business.html">KPIs for Small Businesses</a></li>
+                    <li><a href="../../index.html">Custom Dashboard Development</a></li>
+                    <li><a href="../../examples.html">Sales Dashboard Examples</a></li>
+                </ul>
+            </div>
+
+            <!-- FAQ Section -->
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>What is a sales performance dashboard?</h3>
+                <p>A sales performance dashboard is a visual tool that displays your key sales metrics — revenue, conversion rates, pipeline value, and deal progress — in a single view. It pulls data from your CRM, payment processor, and other tools so you can track performance without logging into multiple apps.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What metrics should be on a sales dashboard?</h3>
+                <p>The core metrics are revenue (by period and comparison), conversion rate, average order value, customer acquisition cost, pipeline value, and sales cycle length. The exact mix depends on your business model, but these six cover most sales teams.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How often should I update my sales dashboard?</h3>
+                <p>Your dashboard should update automatically — either in real time or on a daily schedule. If you are manually updating it, you are using a spreadsheet, not a dashboard. The whole point is that the data refreshes without your intervention.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I build a sales dashboard in Google Sheets?</h3>
+                <p>You can, but it has significant limitations. Google Sheets requires manual data entry, does not update automatically, and makes it difficult to visualise trends over time. It works for one-off analysis but not for ongoing sales tracking.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How is a sales performance dashboard different from a KPI dashboard?</h3>
+                <p>A sales performance dashboard focuses specifically on revenue and sales metrics. A KPI dashboard is broader and can include metrics from marketing, operations, finance, and customer service. The main difference is scope — sales dashboards are a subset of KPI dashboards.</p>
+            </div>
+
+
+        </div>
+    </article>
+
+    <!-- CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Ready for a dashboard that works for your business?</h2>
+                <p>We build custom dashboards connected to your actual data. Clean, clear, and updated automatically. Tell us what you need.</p>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Xenium Designs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+    </script>
+    <!-- Matomo -->
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://analytics.cronindigitalindustries.com/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '5']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript><p><img src="https://analytics.cronindigitalindustries.com/matomo.php?idsite=5&rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo -->
+</body>
+</html>
