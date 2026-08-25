@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Academy Pro — Course Creator Dashboard</title>
+    <title>Code Academy Pro, Course Creator Dashboard</title>
     <link rel="canonical" href="https://xeniumdesigns.com/dashboards/course-creator.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -442,7 +442,7 @@
         <!-- Daily Enrollments Line Chart -->
         <div class="chart-card">
             <h3>Daily Course Enrollments</h3>
-            <div class="subtitle">Last 30 days — all courses combined</div>
+            <div class="subtitle">Last 30 days, all courses combined</div>
             <div class="chart-container">
                 <canvas id="enrollmentsChart"></canvas>
             </div>
@@ -464,7 +464,7 @@
         <!-- Email Campaign Table -->
         <div class="table-card">
             <h3>📧 Email Campaign Performance</h3>
-            <div class="subtitle">MailerLite campaigns — last 30 days</div>
+            <div class="subtitle">MailerLite campaigns, last 30 days</div>
             <div class="table-wrap">
                 <table>
                     <thead>
@@ -496,7 +496,7 @@
     <!-- Monthly Enrollments Bar Chart -->
     <div class="chart-card" style="margin-top: 20px;">
         <h3>Monthly Enrollments</h3>
-        <div class="subtitle">Last 6 months — total enrollments per month</div>
+        <div class="subtitle">Last 6 months, total enrollments per month</div>
         <div class="chart-container">
             <canvas id="monthlyBarChart"></canvas>
         </div>
@@ -511,7 +511,7 @@
 <script>
 // ── Mock Data Generation ──
 
-// 30 days of enrollments (15–45/day)
+// 30 days of enrollments (15, 45/day)
 function generateDailyEnrollments() {
     const data = [];
     const labels = [];
@@ -541,28 +541,28 @@ const monthlyData = {
 
 // Email campaigns
 const campaigns = [
-    { name: 'Welcome Series — New Students', status: 'sent', sent: 1842, openRate: 72.4, clickRate: 18.6, revenue: '$4,280' },
-    { name: 'Python Mastery — Course Launch', status: 'sent', sent: 2156, openRate: 65.8, clickRate: 22.1, revenue: '$8,920' },
-    { name: 'React Pro — Mid-Course Check-in', status: 'sent', sent: 890, openRate: 58.3, clickRate: 14.7, revenue: '$1,640' },
-    { name: 'Data Science — Free Webinar Invite', status: 'sent', sent: 3210, openRate: 48.9, clickRate: 11.2, revenue: '$2,150' },
-    { name: 'DevOps — Early Bird Discount', status: 'sent', sent: 1567, openRate: 61.2, clickRate: 19.8, revenue: '$6,340' },
-    { name: 'Full-Stack JS — Student Spotlight', status: 'sent', sent: 980, openRate: 54.7, clickRate: 13.4, revenue: '$980' },
+    { name: 'Welcome Series, New Students', status: 'sent', sent: 1842, openRate: 72.4, clickRate: 18.6, revenue: '$4,280' },
+    { name: 'Python Mastery, Course Launch', status: 'sent', sent: 2156, openRate: 65.8, clickRate: 22.1, revenue: '$8,920' },
+    { name: 'React Pro, Mid-Course Check-in', status: 'sent', sent: 890, openRate: 58.3, clickRate: 14.7, revenue: '$1,640' },
+    { name: 'Data Science, Free Webinar Invite', status: 'sent', sent: 3210, openRate: 48.9, clickRate: 11.2, revenue: '$2,150' },
+    { name: 'DevOps, Early Bird Discount', status: 'sent', sent: 1567, openRate: 61.2, clickRate: 19.8, revenue: '$6,340' },
+    { name: 'Full-Stack JS, Student Spotlight', status: 'sent', sent: 980, openRate: 54.7, clickRate: 13.4, revenue: '$980' },
     { name: 'Back-to-School Campaign', status: 'scheduled', sent: 2800, openRate: 0, clickRate: 0, revenue: '$0' },
     { name: 'Referral Program Announcement', status: 'sending', sent: 1240, openRate: 42.1, clickRate: 8.9, revenue: '$320' },
     { name: 'Course Bundle Promo', status: 'draft', sent: 0, openRate: 0, clickRate: 0, revenue: '$0' },
-    { name: 'Student Success Stories — Aug', status: 'draft', sent: 0, openRate: 0, clickRate: 0, revenue: '$0' }
+    { name: 'Student Success Stories, Aug', status: 'draft', sent: 0, openRate: 0, clickRate: 0, revenue: '$0' }
 ];
 
 // Activity feed
 const activities = [
     { type: 'enrollment', text: '<strong>Sarah M.</strong> enrolled in <strong>Python Mastery</strong>', time: '2 min ago' },
-    { type: 'revenue', text: '<strong>$249</strong> payment received — <strong>React Pro</strong>', time: '8 min ago' },
+    { type: 'revenue', text: '<strong>$249</strong> payment received, <strong>React Pro</strong>', time: '8 min ago' },
     { type: 'campaign', text: 'Email campaign <strong>"DevOps Early Bird"</strong> sent to 1,567 subscribers', time: '1 hr ago' },
     { type: 'review', text: '<strong>James K.</strong> left a ★★★★★ review on <strong>Data Science Bootcamp</strong>', time: '2 hrs ago' },
-    { type: 'enrollment', text: '<strong>12 new students</strong> enrolled today — trending up!', time: '3 hrs ago' },
+    { type: 'enrollment', text: '<strong>12 new students</strong> enrolled today, trending up!', time: '3 hrs ago' },
     { type: 'revenue', text: '<strong>$1,245</strong> in bundle purchases today', time: '4 hrs ago' },
     { type: 'campaign', text: '<strong>"Referral Program"</strong> campaign is now sending', time: '5 hrs ago' },
-    { type: 'enrollment', text: '<strong>David L.</strong> completed <strong>Full-Stack JS</strong> — certificate issued', time: '6 hrs ago' }
+    { type: 'enrollment', text: '<strong>David L.</strong> completed <strong>Full-Stack JS</strong>, certificate issued', time: '6 hrs ago' }
 ];
 
 // ── Chart.js Setup ──
@@ -571,7 +571,7 @@ Chart.defaults.color = '#7c6a94';
 Chart.defaults.font.family = 'Inter, sans-serif';
 Chart.defaults.font.size = 11;
 
-// 1) Daily Enrollments — Line Chart
+// 1) Daily Enrollments, Line Chart
 const dailyData = generateDailyEnrollments();
 const enrollmentsCtx = document.getElementById('enrollmentsChart').getContext('2d');
 
@@ -635,7 +635,7 @@ new Chart(enrollmentsCtx, {
     }
 });
 
-// 2) Revenue by Course — Doughnut
+// 2) Revenue by Course, Doughnut
 const revenueCtx = document.getElementById('revenuePieChart').getContext('2d');
 new Chart(revenueCtx, {
     type: 'doughnut',
@@ -684,7 +684,7 @@ new Chart(revenueCtx, {
     }
 });
 
-// 3) Monthly Enrollments — Bar Chart
+// 3) Monthly Enrollments, Bar Chart
 const monthlyCtx = document.getElementById('monthlyBarChart').getContext('2d');
 
 const monthlyGradient = monthlyCtx.createLinearGradient(0, 0, 0, 250);
@@ -750,17 +750,17 @@ campaigns.forEach(c => {
     tr.innerHTML = `
         <td class="campaign-name">${c.name}</td>
         <td><span class="status-badge ${c.status}">${c.status}</span></td>
-        <td>${c.sent > 0 ? c.sent.toLocaleString() : '—'}</td>
+        <td>${c.sent > 0 ? c.sent.toLocaleString() : ', '}</td>
         <td>
             <div class="bar-cell">
                 <div class="mini-bar"><div class="mini-bar-fill" style="width:${openBarWidth}%;background:var(--accent)"></div></div>
-                <span>${c.openRate > 0 ? c.openRate + '%' : '—'}</span>
+                <span>${c.openRate > 0 ? c.openRate + '%' : ', '}</span>
             </div>
         </td>
         <td>
             <div class="bar-cell">
                 <div class="mini-bar"><div class="mini-bar-fill" style="width:${clickBarWidth}%;background:var(--info)"></div></div>
-                <span>${c.clickRate > 0 ? c.clickRate + '%' : '—'}</span>
+                <span>${c.clickRate > 0 ? c.clickRate + '%' : ', '}</span>
             </div>
         </td>
         <td style="font-weight:600;color:var(--text-primary)">${c.revenue}</td>

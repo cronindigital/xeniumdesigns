@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen Stories — Content Marketing Dashboard</title>
+    <title>Kitchen Stories, Content Marketing Dashboard</title>
     <link rel="canonical" href="https://xeniumdesigns.com/dashboards/content.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -439,24 +439,24 @@
         <div class="header">
             <div class="header-icon">🍳</div>
             <h1>Kitchen Stories</h1>
-            <p>Content Marketing Dashboard — Food Blog Analytics</p>
+            <p>Content Marketing Dashboard, Food Blog Analytics</p>
         </div>
 
         <!-- Summary KPIs -->
         <div class="summary-strip">
             <div class="summary-card">
                 <div class="label">Total Visits (30d)</div>
-                <div class="value" id="kpi-visits">—</div>
+                <div class="value" id="kpi-visits">, </div>
                 <span class="change positive">↑ 18.2% vs prev</span>
             </div>
             <div class="summary-card">
                 <div class="label">Total Followers</div>
-                <div class="value" id="kpi-followers">—</div>
+                <div class="value" id="kpi-followers">, </div>
                 <span class="change positive">↑ 12.5% vs prev</span>
             </div>
             <div class="summary-card">
                 <div class="label">Email Subscribers</div>
-                <div class="value" id="kpi-subs">—</div>
+                <div class="value" id="kpi-subs">, </div>
                 <span class="change positive">↑ 9.3% vs prev</span>
             </div>
             <div class="summary-card">
@@ -467,7 +467,7 @@
         </div>
 
         <!-- Blog Traffic (30 days) -->
-        <div class="section-title"><span class="dot"></span> Blog Traffic — Last 30 Days</div>
+        <div class="section-title"><span class="dot"></span> Blog Traffic, Last 30 Days</div>
         <div class="card">
             <div class="card-header">
                 <h3>Daily Page Views</h3>
@@ -597,7 +597,7 @@
         <div class="section-title"><span class="dot"></span> Email Marketing</div>
         <div class="card">
             <div class="card-header">
-                <h3>Email Subscriber Growth — Last 6 Months</h3>
+                <h3>Email Subscriber Growth, Last 6 Months</h3>
                 <span class="badge">Total: 6,840</span>
             </div>
             <div class="chart-container tall">
@@ -626,7 +626,7 @@
                 const d = new Date(now);
                 d.setDate(d.getDate() - i);
                 labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-                // Traffic between 500–2000, with some realistic variance
+                // Traffic between 500, 2000, with some realistic variance
                 const base = 1200 + (i < 10 ? 200 : 0); // recent days slightly higher
                 data.push(randomBetween(base - 500, base + 600));
             }
