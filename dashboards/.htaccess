@@ -3,4 +3,4 @@ Options -Indexes
 
 # Redirect directory root to main examples page
 RewriteEngine On
-RewriteRule ^$ /examples.html [R=302,L]
+RewriteRule ^$ /examples.html [R=301,L]
