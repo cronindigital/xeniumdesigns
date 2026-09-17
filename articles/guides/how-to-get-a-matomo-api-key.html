@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Get a Matomo API Key (Auth Token), Step-by-Step | Xenium Designs</title>
+    <link rel="canonical" href="https://xeniumdesigns.com/articles/guides/how-to-get-a-matomo-api-key.html">
+    <meta name="description" content="A beginner-friendly, step-by-step guide to getting your Matomo API key (auth token), explained in plain English with no assumed knowledge.">
+    <meta name="author" content="Xenium Designs">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="How to Get a Matomo API Key (Auth Token), Step-by-Step | Xenium Designs">
+    <meta property="og:description" content="A beginner-friendly, step-by-step guide to getting your Matomo API key (auth token), explained in plain English with no assumed knowledge.">
+    <meta property="og:image" content="https://xeniumdesigns.com/images/article-matomo-api-key.png">
+    <meta property="og:url" content="https://xeniumdesigns.com/articles/guides/how-to-get-a-matomo-api-key.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Xenium Designs">
+    <meta property="article:published_time" content="2026-09-17">
+    <meta property="article:author" content="Xenium Designs">
+    <meta property="article:section" content="Guides">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Get a Matomo API Key (Auth Token), Step-by-Step | Xenium Designs">
+    <meta name="twitter:description" content="A beginner-friendly, step-by-step guide to getting your Matomo API key (auth token), explained in plain English with no assumed knowledge.">
+    <meta name="twitter:image" content="https://xeniumdesigns.com/images/article-matomo-api-key.png">
+
+    <!-- Schema.org Article -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Get a Matomo API Key (Auth Token): A Complete Beginner's Guide",
+  "description": "A plain-English, step-by-step guide to creating a Matomo auth token, written for someone who has never fetched an API key before.",
+  "author": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://xeniumdesigns.com/images/logo.png"
+    }
+  },
+  "datePublished": "2026-09-17",
+  "dateModified": "2026-09-17",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://xeniumdesigns.com/articles/guides/how-to-get-a-matomo-api-key.html"
+  },
+  "keywords": ["matomo api key", "matomo auth token", "matomo token_auth", "matomo api", "get matomo token"]
+}
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a Matomo API key?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Matomo API key (officially called an auth token) is a long random string of letters and numbers that acts as a password for automated access to your Matomo analytics. Instead of logging in each time, an external tool or dashboard presents this token and Matomo trusts it just like a logged-in user."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I create a Matomo auth token?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Log in to Matomo, click the gear (Administration) icon at the top right, then choose Personal, then Security in the left menu, then click Create new token. You will confirm your password, give the token a description, and click Create new token again to see it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between an API key and a password?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A password is verified fresh every time you log in by typing it. An API token is an automatically generated secret that a program presents on your behalf. Tokens can be issued separately for each tool or purpose, and each token can be deleted or renewed on its own without touching your main password."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I turn on Only allow secure requests for my Matomo token?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on how the API is used. If the request is sent as an HTTPS POST (the token travels inside the encrypted body rather than in the visible URL), this extra protection is safe and recommended. If the requests use GET with the token in the URL, this option must stay off or the requests will fail."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my Matomo auth token expire?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only if you set an expiry date when creating it. To have one that keeps working indefinitely, leave the expire date blank. Setting an expiry adds a maintenance job (you must create a new token before the old one runs out), so only use it if your security policy requires it."
+      }
+    }
+  ]
+}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="../../index.html" class="logo">Xenium<span>Designs</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Guides</span>
+            <h1>How to get a <span class="gradient-text">Matomo API key</span></h1>
+            <p>A friendly, step-by-step walkthrough for people who have never fetched an API key before.</p>
+        </div>
+    </div>
+
+    <!-- Article Content -->
+    <article>
+        <div class="article-content">
+
+            <div class="article-meta">
+                <span>Xenium Designs</span>
+                <span>17 September 2026</span>
+                <span>10 min read</span>
+            </div>
+
+            <div class="article-hero-img">
+                <img src="../../images/article-matomo-api-key.png" alt="Key and connection icons beside a Matomo analytics dashboard" width="780" height="400">
+            </div>
+
+            <p>If you are working with us on a new custom dashboard, we will ask you for something we call your "API key" for Matomo. If you have never heard the term before, this guide is for you. We will explain exactly what an API key is, why we need it, and then walk you through getting one, one click at a time.</p>
+
+            <p>No technical knowledge is assumed. If you can log in to a website and click buttons, you can do this.</p>
+
+            <h2>First, what is an API?</h2>
+
+            <p>API stands for "application programming interface". In plain English: it is a way for two pieces of software to talk to each other automatically, without a human clicking around in the middle.</p>
+
+            <p>Think of it like a restaurant. You (the customer) do not walk into the kitchen and grab your own food. You give your order to the waiter, the waiter takes it to the kitchen, and the kitchen sends your food back. The waiter is the API. It carries requests in and results out, in an agreed format that both sides understand.</p>
+
+            <p>In our case, we want your dashboard to automatically ask your Matomo analytics server for numbers: how many people visited your site last week, which pages they read, where they came from. Your dashboard is one piece of software. Matomo is another. The API is the waiter carrying requests and answers between them.</p>
+
+            <h2>What is an API key, and why do we need it?</h2>
+
+            <p>Your Matomo account is protected by a password. Normally that is exactly what you want. But there is a problem: your dashboard needs to fetch data on its own, hundreds of times a day, and nobody is sitting there typing your password each time.</p>
+
+            <p>An API key (in Matomo it is officially called an <strong>auth token</strong>) is a long random string of letters and numbers, something like <code>a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6</code>. It acts like a password for software. When your dashboard asks Matomo for data, it presents this token, and Matomo trusts it just like a logged-in user.</p>
+
+            <p>Three important things about a token:</p>
+
+            <ul>
+                <li><strong>It is created inside your Matomo account.</strong> Only you (or someone you invite to your Matomo) can make one, which is why we have to ask you for it.</li>
+                <li><strong>It is secret.</strong> Anyone with the token can read your analytics data just like a logged-in user can. Treat it like your banking password, not like your wifi password.</li>
+                <li><strong>It can be discarded and replaced without disturbing anything else.</strong> If a token ever gets lost or exposed, you simply create a new one and the old one stops mattering. Your main login is safe.</li>
+            </ul>
+
+            <p>That last point is why API keys exist as a separate thing from your main password. They can be issued per purpose and deleted individually.</p>
+
+            <h2>What you need before you start</h2>
+
+            <p>You will need just two things:</p>
+
+            <ul>
+                <li>The web address (URL) of your Matomo login page. For a Matomo cloud subscription it looks like <code>https://yourname.matomo.cloud</code>. For a self-hosted installation it is whatever address your Matomo was installed on. If you are unsure, check your Matomo welcome email or ask us.</li>
+                <li>Your Matomo username/email and password.</li>
+            </ul>
+
+            <p>You do not need any special software. Everything happens in your normal web browser.</p>
+
+            <h2>Step-by-step: creating your Matomo auth token</h2>
+
+            <p>Here is every click, in order. These steps are for Matomo version 5 and newer, which is what current installations run.</p>
+
+            <h3>Step 1: Log in to your Matomo dashboard</h3>
+
+            <p>Open your browser, go to your Matomo web address, and log in as usual with your email/username and password. You will land on your dashboard, the screen with graphs and tables showing your website traffic.</p>
+
+            <h3>Step 2: Open the Administration area</h3>
+
+            <p>Look at the very top right of the page. You will see a small row of icons, often with your name or avatar at the end. Click the <strong>cog/gear icon (Administration)</strong>. This opens the settings area.</p>
+
+            <h3>Step 3: Go to Personal &rarr; Security</h3>
+
+            <p>On the left of the settings screen is a menu. Find the <strong>Personal</strong> section and click <strong>Security</strong>. This page lists the tokens already created for your account (it may say you have none yet, which is fine) and has a button to create a new one.</p>
+
+            <h3>Step 4: Click Create new token</h3>
+
+            <p>On the Security page, click the <strong>+ Create new token</strong> button. Matomo will ask you to confirm your account password. Type it in and continue. This is just Matomo double-checking it is really you.</p>
+
+            <h3>Step 5: Describe the token</h3>
+
+            <p>You will see <strong>Create new token</strong> options. In the description field, type what this token is for, e.g. <em>Xenium Designs Dashboard</em>. This does not affect anything technically; it is just a label that will remind you later what this token is connected to. This is worth being tidy about: if you ever have several tokens, the descriptions are how you tell them apart.</p>
+
+            <h3>Step 6: Leave Expire date blank</h3>
+
+            <p>The next option asks if you want the token to stop working at some future date. Leave it empty. Choosing a date means the token will stop working when that date passes, and the dashboard data will go stale until you create and share a new one. The default (no date, never expires) is the right choice here.</p>
+
+            <h3>Step 7: The Only allow secure requests checkbox</h3>
+
+            <p>You may see a checkbox called <strong>Only allow secure requests</strong>. Leave it <strong>unticked</strong>. Our dashboard connection uses standard GET requests, and tokens with this option enabled are rejected for those requests. If a developer ever asks you to enable it, that means they are sending the token via POST requests instead. For our dashboard, off is correct.</p>
+
+            <h3>Step 8: Click Create new token</h3>
+
+            <p>Click the <strong>Create new token</strong> button to finish.</p>
+
+            <h3>Step 9: Save the token somewhere safe</h3>
+
+            <p>You will now see your token, the long random string. This is the only time Matomo ever shows it to you. After this screen, Matomo hides it forever; you cannot come back later to look at it again.</p>
+
+            <p>So copy it now: click it (or highlight the text) and copy it to your clipboard, then paste it somewhere safe. The two best places are <strong>a password manager</strong> (Bitwarden, 1Password, etc.) or, failing that, a plain text file only you keep. Then send it to us securely, or paste it wherever we have asked you to send it.</p>
+
+            <div class="tip-box">
+                <h4>You cannot look this up again</h4>
+                <p>It is worth repeating, because almost everyone is caught out at least once: Matomo never shows you the token again after this screen. If you lose it, you cannot retrieve it, you can only create a fresh one and give the new token to whoever needed the old one.</p>
+            </div>
+
+            <h2>Step-by-step in short form</h2>
+
+            <p>For reference, once you are familiar, here is the same walk compressed into numbered form:</p>
+
+            <ol>
+                <li>Log in to Matomo.</li>
+                <li>Go to: <strong>Administration</strong> (cog icon in the top right) &rarr; <strong>Personal</strong> &rarr; <strong>Security</strong>.</li>
+                <li>Click: <strong>Create new token</strong>.</li>
+                <li>Confirm your password.</li>
+                <li>Enter a short description, e.g. <em>Xenium Designs Dashboard</em>.</li>
+                <li>Leave <strong>Expire date</strong> empty.</li>
+                <li>Leave <strong>Only allow secure requests</strong> off unless told otherwise.</li>
+                <li>Click: <strong>Create new token</strong>.</li>
+                <li>Copy the token immediately into a password manager (it is only shown once) and send it to us.</li>
+            </ol>
+
+            <h2>Troubleshooting</h2>
+
+            <h3>"I do not see Administration or Personal"</h3>
+
+            <p>You may be logged in with an account that only has "view" rights, not admin rights. Ask whoever manages your Matomo (often us or your IT person) to either raise your rights or create the token under an account that can.</p>
+
+            <h3>"I do not appear to have any tokens, and I cannot create one"</h3>
+
+            <p>This is almost always the same rights issue as above. Only users with admin (or at least write) rights can create tokens for their own accounts. Check which user account you logged in with; it may not be your main admin account.</p>
+
+            <h3>"I created a token but the dashboard is not picking up data"</h3>
+
+            <p>The three usual causes are: a stray space before or after the token when it was copied, the "Only allow secure requests" option was left on when it should be off, or an expire date was set and the token has since run out. Delete the token, create a fresh one from scratch, and double-check all three points.</p>
+
+            <h3>"I think my token got exposed somewhere"</h3>
+
+            <p>Do not panic, this is recoverable in about a minute. On the same Personal &rarr; Security page, find the token in your list, delete it, create a replacement following the steps above, and give the new token to us. Any tool still holding the old token instantly loses access the moment it is deleted. Your password and your analytics data are untouched.</p>
+
+            <h2>What we do with your token</h2>
+
+            <p>Once we have your token, it is stored server-side in the configuration of your dashboard, where only our scheduled data-fetching script can reach it. That script quietly asks your Matomo for your numbers and files them into your dashboard's database, so every chart you see is up to date. You will never see the token used anywhere, and we will never display it or paste it into any file you might later share.</p>
+
+            <h2>Why this matters</h2>
+
+            <p>That token becomes the bridge that lets your dashboard stay current without anyone logging in, copying, or pasting anything. Setup takes two minutes, and this is the only step on your side of the process.</p>
+
+            <div class="tip-box">
+                <h4>Ready to put it to use?</h4>
+                <p>That token is all we need from Matomo to start building your dashboard. If you have not yet got a dashboard, take a look at <a href="../../examples.html" style="color: #22c55e; text-decoration: underline;">what we build</a> and then <a href="../../contact.html" style="color: #22c55e; text-decoration: underline;">get in touch</a>.</p>
+            </div>
+
+            <!-- FAQ Section -->
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>What is a Matomo API key?</h3>
+                <p>A Matomo API key (officially called an auth token) is a long random string of letters and numbers that acts as a password for automated access to your Matomo analytics. Instead of logging in each time, an external tool or dashboard presents this token and Matomo trusts it just like a logged-in user.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Where do I create a Matomo auth token?</h3>
+                <p>Log in to Matomo, click the gear (Administration) icon at the top right, then choose Personal, then Security in the left menu, then click Create new token. You will confirm your password, give the token a description, and click Create new token again to see it.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What is the difference between an API key and a password?</h3>
+                <p>A password is a secret you type in yourself each time you log in. An API token is an automatically generated secret that a program presents on your behalf. Tokens are created for each specific tool or purpose, and each token can be deleted or replaced on its own without touching your main login.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Should I turn on Only allow secure requests for my Matomo token?</h3>
+                <p>It depends on how the API is being called. If the request is sent as an HTTPS POST (the token travels inside the encrypted request body rather than visible in the URL), this extra protection is safe and recommended. If requests use GET with the token in the URL, this option must stay off or the requests will fail. Our dashboard uses standard GET requests, so leave it off unless told otherwise.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Does my Matomo auth token expire?</h3>
+                <p>Only if you set an expiry date when creating it. To have one that keeps working indefinitely, leave the expire date blank. An expiry requires you to come back and regenerate the token, turning a one-time job into a recurring task, so for a dashboard connection it is usually best not to set one.</p>
+            </div>
+
+        </div>
+    </article>
+
+    <!-- CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Want a dashboard built for your business?</h2>
+                <p>We design and build custom dashboards that turn scattered data into clear, actionable views. Get in touch for a free quote.</p>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Xenium Designs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+    </script>
+    <!-- Matomo -->
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://analytics.cronindigitalindustries.com/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '5']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript><p><img src="https://analytics.cronindigitalindustries.com/matomo.php?idsite=5&rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo -->
+</body>
+</html>
