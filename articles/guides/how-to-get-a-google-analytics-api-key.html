@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Get a Google Analytics API Key, Step-by-Step | Xenium Designs</title>
+    <link rel="canonical" href="https://xeniumdesigns.com/articles/guides/how-to-get-a-google-analytics-api-key.html">
+    <meta name="description" content="A beginner's guide to getting a Google Analytics API key. Why Google uses a service account instead of a simple key, and what we need from you.">
+    <meta name="author" content="Xenium Designs">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="How to Get a Google Analytics API Key, Step-by-Step | Xenium Designs">
+    <meta property="og:description" content="A beginner's guide to getting a Google Analytics API key. Why Google uses a service account instead of a simple key, and what we need from you.">
+    <meta property="og:image" content="https://xeniumdesigns.com/images/article-google-analytics-api-key.png">
+    <meta property="og:url" content="https://xeniumdesigns.com/articles/guides/how-to-get-a-google-analytics-api-key.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Xenium Designs">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Get a Google Analytics API Key, Step-by-Step | Xenium Designs">
+    <meta name="twitter:description" content="A beginner's guide to getting a Google Analytics API key. Why Google uses a service account instead of a simple key, and what we need from you.">
+    <meta name="twitter:image" content="https://xeniumdesigns.com/images/article-google-analytics-api-key.png">
+    <meta name="twitter:image:alt" content="Google Analytics API key guide with developer tools">
+
+    <!-- Article schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How to Get a Google Analytics API Key, Step-by-Step for Beginners",
+        "description": "A beginner's guide to getting a Google Analytics API key. Why Google uses a service account instead of a simple key, and what we need from you.",
+        "image": "https://xeniumdesigns.com/images/article-google-analytics-api-key.png",
+        "author": {"@type": "Organization", "name": "Xenium Designs", "url": "https://xeniumdesigns.com"},
+        "publisher": {"@type": "Organization", "name": "Xenium Designs", "url": "https://xeniumdesigns.com", "logo": {"@type": "ImageObject", "url": "https://xeniumdesigns.com/images/logo.png"}},
+        "datePublished": "2026-09-17",
+        "dateModified": "2026-09-17",
+        "mainEntityOfPage": {"@type": "WebPage", "@id": "https://xeniumdesigns.com/articles/guides/how-to-get-a-google-analytics-api-key.html"}
+    }
+    </script>
+
+    <!-- FAQ schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": "Why can't Google Analytics just use an API key like other tools?", "acceptedAnswer": {"@type": "Answer", "text": "Google's APIs don't use simple keys for private data. Instead you create a service account, a special robot user, and connect it to your Analytics property. It works out to the same thing: your dashboard gets automatic access without you sharing your password."}},
+            {"@type": "Question", "name": "Do I need to pay for a Google Cloud project?", "acceptedAnswer": {"@type": "Answer", "text": "No. Creating a Google Cloud project, a service account and downloading its JSON key file are all free. The Google Analytics Data API is free to call on standard Analytics accounts."}},
+            {"@type": "Question", "name": "What do I send Xenium Designs?", "acceptedAnswer": {"@type": "Answer", "text": "Two things: the downloaded JSON key file, and your GA4 Property ID (a number like 123456789, found in Admin, Property details). We wire both into your dashboard server-side, and the connection keeps working with no expiry."}},
+            {"@type": "Question", "name": "Is it safe to give out a service account JSON file?", "acceptedAnswer": {"@type": "Answer", "text": "It's safe when done correctly. The service account only sees the Analytics properties you grant it access to, and only as a Viewer. If you ever want to cut access, you simply delete the service account or its key and our access ends instantly."}},
+            {"@type": "Question", "name": "My download failed and I can't re-download the JSON file. What now?", "acceptedAnswer": {"@type": "Answer", "text": "That is by design: the key file downloads only once, for security. Just create a new key the same way (Keys tab, Add key, Create new key, JSON) and send the fresh file. If a lost key was never shared, there is no need to worry; you can also delete the missing key from the Keys tab."}}
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="../../index.html" class="logo">Xenium<span>Designs</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../guides.html">Guides</a>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Guides</span>
+            <h1>How to get a <span class="gradient-text">Google Analytics API key</span></h1>
+            <p>Written for people who have never fetched an API credential before. Every step explained, no jargon, no assumed knowledge.</p>
+        </div>
+    </div>
+
+    <!-- Article -->
+    <article class="article-content">
+        <div class="container">
+            <div class="tip-box"><p>New to APIs, or never fetched a key before? Start with our plain-English explainer on the <a href="../../guides.html">Guides front page</a>, then come back here when you are ready.</p></div>
+
+            <h2>Google Analytics is different: no quick key</h2>
+
+            <p>You might have been expecting to repeat what happened with your other tools: click a menu, generate a key, copy it, email it over, done. Google doesn't work that way, and this guide explains why.</p>
+
+            <p>Google protects private data (like your Analytics reports) with its own account system. A simple "API key" in Google's world is only used for public information, not for anything belonging to you. Instead, Google asks you to create something it calls a <strong>service account</strong>: a special, empty "robot user" that lives in Google's system, which you then invite into your Analytics property the same way you'd invite a human colleague.</p>
+
+            <p>Think of it like hiring a cleaner. You don't hand over your own house keys and your alarm code. Instead you issue the cleaner their own key, which only opens the front door, and you can cancel it without ever changing your own locks. A service account is the cleaner, the JSON file is their key, and you still control the door.</p>
+
+            <p>The dashboard connection ends up just as automatic: no expiry, no re-login, and you can revoke access whenever you want. But it does involve Google's developer console, which is a bit more involved than the other services. The steps below walk through everything on screen, one click at a time.</p>
+
+            <p><strong>What you'll end up sending us:</strong> a downloaded file called something like <code>xenium-dashboard-1234abc.json</code>, and a 9-digit number called your Property ID. That's it. Everything else is for us to wire up.</p>
+
+            <h2>What you need before you start</h2>
+
+            <ul>
+                <li><strong>Access to your Google Analytics</strong> (the same Google account you normally open analytics.google.com with).</li>
+                <li><strong>Admin (or Editor) rights on that Analytics property.</strong> You'll need them to add the service account as a user later in this guide. If you're not sure, whoever set up Analytics for you can grant you access, or they can sit next to you for step five.</li>
+                <li><strong>A Google Cloud project.</strong> Think of it as a workspace box for all the "plumbing" (keys and settings) that Google tools use. If you have never made one, step two covers it in a few clicks.</li>
+                <li><strong>Roughly 20 minutes.</strong> Most of that is Google's own loading screens and waiting periods. Nothing here costs money.</li>
+            </ul>
+
+            <p>A quick note on terms: your Analytics data is organised into a <strong>property</strong>, usually one per website. If your business has one website, you almost certainly have one property, and this guide works for it.</p>
+
+            <div class="tip-box"><p>Do this on a computer, not on a phone. The Google Cloud console is not built for small screens.</p></div>
+
+            <h2>Step-by-step: getting what we need</h2>
+
+            <h3>Step 1: Find your Property ID</h3>
+
+            <ol>
+                <li>Go to <strong>analytics.google.com</strong> and sign in with your usual Google account.</li>
+                <li>Click the <strong>cog (⚙ Admin)</strong> button at the bottom left.</li>
+                <li>Under the <strong>Property</strong> column, click <strong>Property details</strong>. Your <strong>Property ID</strong> is the number at the top, something like <code>327741967</code>.</li>
+            </ol>
+
+            <p>This number tells the dashboard which website's data to read. There is a separate "stream ID" and other numbers in Analytics; ignore those, the Property ID is the one we want.</p>
+
+            <p><strong>Write it down or copy it now.</strong> It goes in the email you send us at the end.</p>
+
+            <h3>Step 2: Set up your Google Cloud project</h3>
+
+            <p>This is the part other tools don't need, and it's why Google's process looks scary. Don't worry: you won't ever need to type a single command.</p>
+
+            <ol>
+                <li>Go to <strong>console.cloud.google.com</strong> in your browser (same Google account).</li>
+                <li>At the very top, next to the Google Cloud logo, there is a project picker. Click it.</li>
+                <li>If you have no projects yet, click <strong>New Project</strong> (top right).</li>
+                <li>Name the project something memorable: <strong>xenium-dashboard</strong> works well.</li>
+                <li>Google shows you a billing account screen or "free trial" offer. <strong>You don't need to pay or add any card.</strong> The free tier covers everything in this guide.</li>
+                <li>Click <strong>Create</strong>. After a moment, Google sets the project as active in the top bar.</li>
+            </ol>
+
+            <div class="tip-box"><p>New to Google Cloud? It's worth knowing it is a completely separate product from Analytics, and this is a one-time setup. Once your project is live you won't come back here.</p></div>
+
+            <h3>Step 3: Turn on the Google Analytics Data API</h3>
+
+            <ol>
+                <li>In the Cloud console, open the menu (three lines, top left).</li>
+                <li>Click <strong>APIs &amp; Services</strong>, then <strong>Library</strong>.</li>
+                <li>Search for <strong>Google Analytics Data API</strong>.</li>
+                <li>Click it, then click <strong>Enable</strong> if it isn't already on.</li>
+            </ol>
+
+            <p>That's the whole "turn the feature on" step. No projects or complicated settings needed.</p>
+
+            <h3>Step 4: Create the service account</h3>
+
+            <ol>
+                <li>In the Cloud console menu, go to <strong>IAM &amp; Admin</strong> &gt; <strong>Service Accounts</strong>.</li>
+                <li>Click <strong>Create service account</strong> (or <strong>+ Create service account</strong> at the top).</li>
+                <li>In the <strong>Service account name</strong> field, type something meaningful: <strong>xenium-dashboard</strong> is fine.</li>
+                <li>The <strong>Service account ID</strong> fills itself in. Leave it alone.</li>
+                <li>Click <strong>Create and continue</strong>, then on the roles screen click <strong>Continue</strong> (no roles are needed here), then <strong>Done</strong>.</li>
+            </ol>
+
+            <p>You're now looking at the Service accounts list, with your robot user sitting there. It can't do anything yet; it has no key and no access to your data. Two more steps.</p>
+
+            <h3>Step 5: Give the service account read access to your Analytics</h3>
+
+            <ol>
+                <li>On the <strong>Service accounts</strong> page, click the new entry. You'll see an e-mail like <code>xenium-dashboard@xenium-dashboard.iam.gserviceaccount.com</code>. <strong>Copy that e-mail address</strong> (click the copy icon next to it).</li>
+                <li>Go back to <strong>analytics.google.com</strong>.</li>
+                <li>Click the <strong>Admin</strong> button again (bottom left).</li>
+                <li>Under the <strong>Property</strong> column, click <strong>Property access management</strong>.</li>
+                <li>Click the <strong>+</strong> (plus) in the top right, then <strong>Add users</strong>.</li>
+                <li>Paste the service account's e-mail address in the e-mail box.</li>
+                <li>Uncheck <strong>Notify new users</strong> (so nothing goes to the robot; it has no inbox).</li>
+                <li>Tick <strong>Viewer</strong> under the roles list. <strong>Don't tick anything else,</strong> Viewer is all it needs.</li>
+                <li>Click <strong>Add</strong>.</li>
+            </ol>
+
+            <p>You have just given the robot user permission to read your Analytics data. From here, anything holding that JSON key can see your reports (but nothing else).</p>
+
+            <div class="tip-box"><p>If you didn't create your Analytics property yourself, this is where your Analytics admin sits in. Everything else you can do alone.</p></div>
+
+            <h3>Step 6: Create and download the JSON key</h3>
+
+            <ol>
+                <li>Back in the Cloud console, under <strong>IAM &amp; Admin &gt; Service Accounts</strong>, click the e-mail of the service account you just made.</li>
+                <li>Click the <strong>Keys</strong> tab along the top.</li>
+                <li>Click <strong>Add key</strong> &gt; <strong>Create new key</strong>.</li>
+                <li>Leave <strong>JSON</strong> selected, then click <strong>Create</strong>.</li>
+                <li>A file downloads. It's called something like <code>xenium-dashboard-1234ab.iam.gserviceaccount.com.json</code>.</li>
+            </ol>
+
+            <div class="tip-box"><p>That JSON file downloads exactly once. There is no second download: if it is lost or opened without care, you simply repeat the "Add key" four steps and get a fresh one.</p></div>
+
+            <h3>Step 7: Send it over</h3>
+
+            <p>Email us the JSON file and the Property ID number. That is all we need. Once we have it, your dashboard pulls your Google Analytics numbers automatically, the way the other services already do.</p>
+
+            <h2>Short-step recap</h2>
+
+            <ol>
+                <li>Analytics: <strong>Admin &gt; Property details</strong>, copy the <strong>Property ID</strong>.</li>
+                <li>Cloud console: create project <strong>xenium-dashboard</strong>.</li>
+                <li>Enable the <strong>Google Analytics Data API</strong> in APIs &amp; Services &gt; Library.</li>
+                <li><strong>IAM &amp; Admin &gt; Service Accounts &gt; Create service account</strong>, copy its e-mail.</li>
+                <li>Analytics: <strong>Admin &gt; Property access management</strong>, add that e-mail as <strong>Viewer</strong>.</li>
+                <li>Cloud console: service account &gt; <strong>Keys</strong> &gt; <strong>Add key &gt; Create new key &gt; JSON</strong>, download.</li>
+                <li>Email the file <strong>and</strong> the Property ID.</li>
+            </ol>
+
+            <h2>Troubleshooting</h2>
+
+            <h3>"I got to the Cloud console and it wants to charge me"</h3>
+            <p>The free tier covers everything in this guide; you should never be asked for more than Google's standard free-trial page. If you see a paid plan screen, click "Dismiss" or "Back". Nothing in this guide creates a cost.</p>
+
+            <h3>"Enable is greyed out / API not found"</h3>
+            <p>Make sure the project you selected at the top is the one you created in step two. Google Cloud can silently switch to a different project if you have more than one.</p>
+
+            <h3>"Analytics won't let me click Admin"</h3>
+            <p>You only have Viewer (or Analyst) rights on the property. Ask whoever manages your Analytics to either run step five with you on a call, or add you as an Editor temporarily. You can be dropped back down afterwards.</p>
+
+            <h3>"The data isn't updating in my dashboard"</h3>
+            <p>Google Analytics reports run on a delay, usually a few hours, sometimes up to a full day. If the dashboard shows numbers up to yesterday, that is normal Google behaviour, not a fault.</p>
+
+            <h3>"I lost the JSON file"</h3>
+            <p>No drama: the same "Add key &gt; Create new key &gt; JSON" button gives you a fresh one whenever you need it. If the lost file was never shared with anyone else, nothing to worry about. If in doubt, create a new key and delete the old one from the Keys tab so it can never be used again.</p>
+
+            <h3>"I want to stop sharing this with you"</h3>
+            <p>Broken trust shouldn't be a technical problem. Two options: in Analytics &gt; Access management, remove the service account user. Or in the Cloud console, on the service account's Keys tab, delete the key. Both cut off access instantly.</p>
+
+            <h2>What we do with your key</h2>
+
+            <p>Only two things: wire up the connection (a one-time job at setup) and run the automated fetches on schedule. We never paste your token anywhere user-facing, we never commit it to public code, and only you or we can read your data once it's set up this way. If a token is ever compromised you'll be told, and the fix is a 1-click revoke plus a new token.</p>
+
+            <h2>Why this matters</h2>
+
+            <p>That service account is the last piece standing between you and a dashboard that updates itself. Once it's connected, your Analytics figures refresh on their own, alongside your other data, with no logins, no copy-pasting, and no expiry dates to set a calendar reminder for.</p>
+
+            <h2>Frequently asked questions</h2>
+
+            <h3>Why not just an API key like the other tools?</h3>
+            <p>Google uses credential types called "API keys" only for data that's public anyway. Anything personal (your reports, your users' private information) needs proper authentication: a service account or an OAuth login flow. For a dashboard, the service account approach is the right one, because it doesn't need anyone's password.</p>
+
+            <h3>Does this cost anything?</h3>
+            <p>No. The Google Analytics Data API is free up to very generous limits (well beyond what one dashboard needs). The Cloud project itself is free tier; no card required for any of these steps.</p>
+
+            <h3>Can I give it to you in a different way than email?</h3>
+            <p>Email is fine for the first send: the file is specific to this one dashboard. If you'd rather not email it, we can do a short screen-share call and paste it directly on your side, just ask.</p>
+
+            <h3>Will this keep working when I change my Google password?</h3>
+            <p>Yes. That's the advantage of a service account, it is tied to a JSON key, not your personal login. Password changes, two-factor changes, even losing your phone don't break the dashboard connection.</p>
+
+            <h3>What if Google changes something?</h3>
+            <p>The service stays supported by Google, and we keep our dashboard code updated for any changes Google makes, so you don't need to keep pace with that, same as with the other guides.</p>
+        </div>
+    </article>
+
+    <!-- CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Want a dashboard built for your business?</h2>
+                <p>We design and build custom dashboards that turn scattered data into clear, actionable views. Get in touch for a free quote.</p>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Xenium Designs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../guides.html">Guides</a>
+                <a href="../../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+    </script>
+    <!-- Matomo -->
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://analytics.cronindigitalindustries.com/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '5']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript><p><img src="https://analytics.cronindigitalindustries.com/matomo.php?idsite=5&rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo -->
+</body>
+</html>
