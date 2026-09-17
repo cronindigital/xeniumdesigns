@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Get a Facebook (Meta) Access Token, Step-by-Step | Xenium Designs</title>
+    <link rel="canonical" href="https://xeniumdesigns.com/articles/guides/how-to-get-a-facebook-access-token.html">
+    <meta name="description" content="A beginner-friendly, step-by-step guide to getting a Facebook Page access token via Meta's developer tools, explained in plain English.">
+    <meta name="author" content="Xenium Designs">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="How to Get a Facebook (Meta) Access Token, Step-by-Step | Xenium Designs">
+    <meta property="og:description" content="A beginner-friendly, step-by-step guide to getting a Facebook Page access token via Meta's developer tools, explained in plain English.">
+    <meta property="og:image" content="https://xeniumdesigns.com/images/article-meta-access-token.png">
+    <meta property="og:url" content="https://xeniumdesigns.com/articles/guides/how-to-get-a-facebook-access-token.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Xenium Designs">
+    <meta property="article:published_time" content="2026-09-17">
+    <meta property="article:author" content="Xenium Designs">
+    <meta property="article:section" content="Guides">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Get a Facebook (Meta) Access Token, Step-by-Step | Xenium Designs">
+    <meta name="twitter:description" content="A beginner-friendly, step-by-step guide to getting a Facebook Page access token via Meta's developer tools, explained in plain English.">
+    <meta name="twitter:image" content="https://xeniumdesigns.com/images/article-meta-access-token.png">
+
+    <!-- Schema.org Article -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Get a Facebook (Meta) Access Token: A Complete Beginner's Guide",
+  "description": "A plain-English, step-by-step guide to getting a long-lived Facebook Page access token using Meta's developer tools and Graph API Explorer, written for someone who has never fetched an API key before.",
+  "author": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Xenium Designs",
+    "url": "https://xeniumdesigns.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://xeniumdesigns.com/images/logo.png"
+    }
+  },
+  "datePublished": "2026-09-17",
+  "dateModified": "2026-09-17",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://xeniumdesigns.com/articles/guides/how-to-get-a-facebook-access-token.html"
+  },
+  "keywords": ["facebook access token", "facebook page access token", "meta api token", "graph api explorer", "long lived access token"]
+}
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is Facebook more complicated than a normal API key?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Instead of one simple key, Meta uses layered access tokens: a short-lived user token, optionally a long-lived user token, and finally a Page access token. Page access tokens obtained through a long-lived user token do not carry an expiry date, which is why the extra exchange steps are worth doing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need a Meta developer app to get a Page access token?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Tokens are always issued through a Meta app, so you first need a free Meta developer account and an app. The app does not need to be published for you to fetch your own Page data in development mode."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Graph API Explorer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is a free tool in Meta's developer portal where you can request tokens and test Graph API requests in a web page without writing code. You select permissions, click Generate Access Token, approve them, and copy the token that appears."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long do Facebook access tokens last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Default tokens from the Graph API Explorer expire in about one to two hours. A long-lived user token lasts about 60 days. A Page access token generated from a long-lived user token has no expiry date, though it can still be invalidated if you change your password, remove the app, or lose your Page role."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is an access token the same thing as my Facebook password?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Your password is a secret you type in yourself. An access token is an automatically generated string that a program presents on your behalf, scoped to specific permissions and specific Pages. It can be invalidated at any time from the developer tools without touching your Facebook login."
+      }
+    }
+  ]
+}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="../../index.html" class="logo">Xenium<span>Designs</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Guides</span>
+            <h1>How to get a <span class="gradient-text">Facebook access token</span></h1>
+            <p>A friendly, step-by-step walkthrough for people who have never fetched an API key before.</p>
+        </div>
+    </div>
+
+    <!-- Article Content -->
+    <article>
+        <div class="article-content">
+
+            <div class="article-meta">
+                <span>Xenium Designs</span>
+                <span>17 September 2026</span>
+                <span>12 min read</span>
+            </div>
+
+            <div class="article-hero-img">
+                <img src="../../images/article-meta-access-token.png" alt="Facebook Page insights connected to a business dashboard with a key icon" width="780" height="400">
+            </div>
+
+            <p>If we are building your dashboard and one of your data sources is your Facebook Page, we will ask you for a "Facebook Page access token". This one is a bit more involved than the key for a service like Matomo or MailerLite, because Meta (Facebook's parent company) uses a layered system. Take it slowly, follow each step in order, and you will get there. No technical knowledge is assumed.</p>
+
+            <h2>First, what is an API?</h2>
+
+            <p>API stands for "application programming interface". In plain English: it is a way for two pieces of software to talk to each other automatically, without a human clicking around in the middle.</p>
+
+            <p>Think of it like a restaurant. You, the customer, do not walk into the kitchen and grab your own food. You give your order to the waiter, the waiter takes it to the kitchen, and the kitchen sends your food back out. The waiter is the API. It carries requests in and results out, in an agreed format both sides understand.</p>
+
+            <p>In our case, we want your dashboard to automatically ask Facebook for your Page's numbers: post engagement, likes, comments, shares, follower counts. Your dashboard is one piece of software. Facebook is another. The API (Meta calls theirs the Graph API) is the waiter between them.</p>
+
+            <h2>What is an access token, and why is Facebook's different?</h2>
+
+            <p>Most services give you one simple API key. Meta's system is layered, and it helps to know the layers before you start:</p>
+
+            <ul>
+                <li><strong>User access token:</strong> a token that acts as you, granted through a login approval. Short-lived.</li>
+                <li><strong>Long-lived user access token:</strong> a user token exchanged to last about 60 days.</li>
+                <li><strong>Page access token:</strong> a token that acts on a specific Facebook Page. When generated from a long-lived user token, it has <strong>no expiry date</strong>. This is the one our dashboard needs.</li>
+            </ul>
+
+            <p>Three important things about any of these tokens:</p>
+
+            <ul>
+                <li><strong>They are made in Meta's developer tools</strong>, not in normal Facebook settings. That is why this guide has more steps than the others.</li>
+                <li><strong>They are secret.</strong> A Page token in the wrong hands means someone can read and even post to your Page. Treat it like your banking password.</li>
+                <li><strong>They can be invalidated and replaced.</strong> You can remove an app's access from your Facebook settings at any time, and generate a fresh token, without changing your Facebook password.</li>
+            </ul>
+
+            <h2>What you need before you start</h2>
+
+            <ul>
+                <li>Your normal Facebook login, with <strong>admin rights on the Page</strong> you want to connect. If someone else manages your Page, either get admin access or have that person do these steps.</li>
+                <li>Access to developers.facebook.com (free; you sign in with your normal Facebook account).</li>
+                <li>About 15 minutes. There is nothing difficult, just several screens.</li>
+            </ul>
+
+            <h2>Step A: Create your Meta developer app</h2>
+
+            <p>Tokens are always issued through a Meta app, so first we create a free one.</p>
+
+            <h3>A1. Create a developer account</h3>
+
+            <p>Go to <code>developers.facebook.com</code> in your browser (you stay logged in with your normal Facebook account) and register as a developer if you have not before. It is free and takes a minute; you may be asked to verify with a phone number.</p>
+
+            <h3>A2. Create the app</h3>
+
+            <p>While logged in, use the <strong>Get Started / Create App</strong> flow: give the app any name (e.g. <em>Xenium Designs Dashboard</em>), enter a contact email, and choose a use case such as <strong>Business</strong> (or "Business" type if shown as an option). Confirm, and you land on the app's dashboard. If Facebook asks you to pick products to add, choose <strong>Graph API Explorer</strong> or Facebook Login if asked.</p>
+
+            <h3>A3. Note your App ID and App Secret</h3>
+
+            <p>On the app's dashboard, open <strong>Settings, Basic</strong> in the left menu. You will see an <strong>App ID</strong> (a number) and an <strong>App Secret</strong> (a hidden string; click Show to reveal it, Facebook may ask you to re-enter your password). Copy both somewhere safe, we will need them shortly, and keep the App Secret private, it is the master key to your app.</p>
+
+            <h2>Step B: Get a short-lived user access token</h2>
+
+            <h3>B1. Open the Graph API Explorer</h3>
+
+            <p>Go to <code>developers.facebook.com/tools/explorer</code>. Meta may ask you to pick your new app from a dropdown, if so, choose <em>Xenium Designs Dashboard</em> (or whatever you named it).</p>
+
+            <h3>B2. Choose the right permissions</h3>
+
+            <p>In the Permissions section, add these (type each into the permission search box and click it):</p>
+
+            <ul>
+                <li><code>pages_show_list</code></li>
+                <li><code>pages_read_engagement</code></li>
+                <li><code>pages_manage_metadata</code> (only if told we need it for your setup)</li>
+            </ul>
+
+            <h3>B3. Generate the token</h3>
+
+            <p>Click <strong>Generate Access Token</strong>. A Facebook approval window pops up, listing what the app wants to do. Approve it, and confirm the dialogue about proceeding as yourself. When you land back in the Explorer, a long token string is visible in the <strong>Access Token</strong> field at the top. That is your short-lived user access token.</p>
+
+            <h2>Step C: Turn it into a long-lived user token</h2>
+
+            <p>Short-lived tokens expire within hours, which would mean repeating all this constantly. Instead we exchange it. Meta provides the Access Token Debugger for this.</p>
+
+            <h3>C1. Open the Access Token Debugger</h3>
+
+            <p>Go to <code>developers.facebook.com/tools/debug/accesstoken</code> and paste the token from Step B3 into the box, then click Debug. You will see details including an "Expires" value of roughly one to two hours.</p>
+
+            <h3>C2. Click Extend Access Token</h3>
+
+            <p>At the bottom of the debug results, click <strong>Extend Access Token</strong>. You will receive a new, long token string. Copy it immediately and keep it; it is valid for about 60 days.</p>
+
+            <div class="tip-box">
+                <h4>The long-lived user token is a stepping stone</h4>
+                <p>The token from debugger (Step C2) is not the final one we need, but it is the ingredient that unlocks a never-expiring Page token in the next step. Do not close the tab without copying it.</p>
+            </div>
+
+            <h2>Step D: Get the never-expiring Page access token</h2>
+
+            <h3>D1. Back in the Graph API Explorer, select the long-lived token</h3>
+
+            <p>Return to <code>developers.facebook.com/tools/explorer</code> and paste the long-lived token from Step C2 into the <strong>Access Token</strong> field.</p>
+
+            <h3>D2. Call the /me/accounts endpoint</h3>
+
+            <p>In the query box (where it may already say <code>me</code>), type <code>me/accounts</code> and click <strong>Submit</strong>. The response lists your Facebook Pages. Find your Page and copy the value next to <code>access_token</code> inside it. That long string is your <strong>long-lived Page access token</strong>: this is the one that has no expiry date, the one we need.</p>
+
+            <div class="tip-box">
+                <h4>Send it to us the agreed way</h4>
+                <p>Copy the Page access token into a password manager, then send it to us securely, or paste it wherever we have asked you to send it. Never post it publicly, in a screenshot, or inside another document.</p>
+            </div>
+
+            <h2>Step-by-step in short form</h2>
+
+            <ol>
+                <li>Register at <strong>developers.facebook.com</strong> with the Facebook account that administers your Page.</li>
+                <li>Create an app (any name, Business type), then copy the <strong>App ID</strong> and <strong>App Secret</strong> from Settings, Basic.</li>
+                <li>Open <strong>Graph API Explorer</strong>, select your app, add the <code>pages_show_list</code> and <code>pages_read_engagement</code> permissions.</li>
+                <li>Click <strong>Generate Access Token</strong>, approve the dialogue, copy the short-lived token.</li>
+                <li>Open the <strong>Access Token Debugger</strong>, debug that token, click <strong>Extend Access Token</strong>, copy the long-lived token.</li>
+                <li>Back in <strong>Graph API Explorer</strong>, paste the long-lived token, run <code>me/accounts</code>, and copy the <code>access_token</code> under your Page.</li>
+                <li>Send that Page access token to us securely.</li>
+            </ol>
+
+            <h2>Troubleshooting</h2>
+
+            <h3>"I cannot register as a developer"</h3>
+
+            <p>Make sure your personal Facebook account is verified (phone number confirmed) and in good standing. Also check you are using the account that has admin rights on the Page; a generic work account may have restrictions.</p>
+
+            <h3>"I chose the wrong permissions and no Pages appear"</h3>
+
+            <p>In Graph API Explorer, redo Step B2 with both permissions selected, regenerate the token, and try <code>me/accounts</code> again. Without <code>pages_show_list</code> the response will be empty.</p>
+
+            <h3>"The token I gave got rejected later"</h3>
+
+            <p>The most common causes are: we were given a short-lived token instead of the long-lived Page token (redo from Step C), the token belongs to someone who later lost admin rights on the Page, or the password was changed after the token was made (which can invalidate it). Generate a fresh token following the steps above and anything referencing the old one updates instantly.</p>
+
+            <h3>"I think my token has been exposed somewhere"</h3>
+
+            <p>Never fear, this is fixable. Either remove the app's access (Facebook settings &rarr; Business integrations &rarr; remove) or debug/change nothing and simply create a new token and send only the new one. Then tell us so we can update the dashboard.</p>
+
+            <h2>What we do with your token</h2>
+
+            <p>Once we have it, the token lives in the configuration of your dashboard on the server, where only our scheduled data-fetching script can reach it. That script quietly asks Facebook for your Page's numbers and files them into your dashboard's database, so every chart you see is up to date: follower counts, reach, engagement. You will never see the token used anywhere, and we will never display it or paste it into any file you might later share.</p>
+
+            <h2>Why this matters</h2>
+
+            <p>Facebook is the most layered of the services we connect, which is why this guide is the longest. But once you have walked through it one time and hold that long-lived Page token, it works for the long term with no maintenance, and that is the only step we need from your side.</p>
+
+            <div class="tip-box">
+                <h4>Ready to put it to use?</h4>
+                <p>That token is all we need from Facebook to start building your dashboard. If you have not yet got a dashboard, take a look at <a href="../../examples.html" style="color: #22c55e; text-decoration: underline;">what we build</a> and then <a href="../../contact.html" style="color: #22c55e; text-decoration: underline;">get in touch</a>.</p>
+            </div>
+
+            <!-- FAQ Section -->
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>Why is Facebook's access token more complicated than other API keys?</h3>
+                <p>Meta layers its tokens: user short-lived, user long-lived, and Page tokens. The extra exchange steps exist so that the final Page token has no expiry date, which is exactly what a dashboard needs to keep working without maintenance.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Do I need a Meta developer app to get a Page access token?</h3>
+                <p>Yes. Tokens are issued through a Meta app, so you first need a free Meta developer account and an app. The app does not need review or publishing for you to read your own Page's data in development mode.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What is the Graph API Explorer?</h3>
+                <p>A free web tool in Meta's developer portal where you request tokens and test API calls without writing code. You select permissions, click Generate Access Token, approve, and copy the token it shows.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How long do Facebook access tokens last?</h3>
+                <p>Default tokens expire in about one to two hours. Long-lived user tokens last about 60 days. Page tokens generated from a long-lived user token have no expiry, though they can be invalidated by password changes, removing the app's access, or losing Page admin rights.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Is an access token the same thing as my Facebook password?</h3>
+                <p>No. Your password is a secret you type yourself. An access token is an automatically generated secret a program presents on your behalf, valid only for the scope it was granted (specific Pages, specific permissions), and it can be revoked separately at any time.</p>
+            </div>
+
+        </div>
+    </article>
+
+    <!-- CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Want a dashboard built for your business?</h2>
+                <p>We design and build custom dashboards that turn scattered data into clear, actionable views. Get in touch for a free quote.</p>
+                <a href="../../contact.html" class="btn btn-primary">Get In Touch &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Xenium Designs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="../../index.html">Home</a>
+                <a href="../../examples.html">Examples</a>
+                <a href="../../articles.html">Articles</a>
+                <a href="../../contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+    </script>
+    <!-- Matomo -->
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://analytics.cronindigitalindustries.com/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '5']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript><p><img src="https://analytics.cronindigitalindustries.com/matomo.php?idsite=5&rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo -->
+</body>
+</html>
