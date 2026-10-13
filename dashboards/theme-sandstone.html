@@ -328,6 +328,22 @@
             options: { maintainAspectRatio: false, cutout: '62%',
                 plugins: { legend: { position: 'bottom', labels: { color: '#6a7280', font: { size: 11 } } } } }
         });
+
+        /* ---------- printer-friendly PDF mode (pure white for B/W printing) ---------- */
+        window._pdfPrintOn = function () {
+            const dash = document.querySelector('.dashboard');
+            window._pdfSavedDashBg = dash ? dash.style.background : '';
+            window._pdfSavedBodyBg = document.body.style.background;
+            if (dash) dash.style.background = '#ffffff';
+            document.body.style.background = '#ffffff';
+            return Promise.resolve();
+        };
+        window._pdfPrintOff = function () {
+            const dash = document.querySelector('.dashboard');
+            if (dash) dash.style.background = window._pdfSavedDashBg || '';
+            document.body.style.background = window._pdfSavedBodyBg || '';
+            return Promise.resolve();
+        };
     </script>
 </body>
 </html>

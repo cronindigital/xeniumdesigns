@@ -391,13 +391,13 @@
             const r = document.documentElement.style, b = document.body.style;
             window._pdfSavedInline = ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
                 .filter(k => r.getPropertyValue(k) !== '');
-            r.setProperty('--bg-primary', '#eaeaea'); r.setProperty('--bg-card', '#ffffff');
-            r.setProperty('--bg-card-hover', '#f5f5f5'); r.setProperty('--border-color', '#dde2e7');
+            r.setProperty('--bg-primary', '#ffffff'); r.setProperty('--bg-card', '#ffffff');
+            r.setProperty('--bg-card-hover', '#f7f7f7'); r.setProperty('--border-color', '#b9bfc6');
             r.setProperty('--text-primary', '#33414f'); r.setProperty('--text-secondary', '#6a7280');
             r.setProperty('--text-muted', '#8a929b');
             if (document.body.dataset.theme === 'lapis') {
                 if (!window._pdfSavedBody) window._pdfSavedBody = b.background;
-                b.background = '#eaeaea';
+                b.background = '#ffffff';
             }
             b.color = '#33414f';
             window._recolourPdfCharts('light');
