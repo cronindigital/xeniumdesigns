@@ -154,6 +154,7 @@
 .pdf-btn { cursor: pointer; font-family: inherit; transition: color 0.15s, border-color 0.15s; }
 .pdf-btn:hover { color: var(--text-primary); border-color: var(--blue); }
     </style>
+    <style>.badge.demo{color:var(--good);border-color:rgba(34,197,94,0.4);font-weight:600;}</style>
 </head>
 <body>
     <a href="../examples.html" class="back-link no-pdf">&larr; Back to Examples</a>
@@ -171,97 +172,253 @@
             <div class="header-right">
                 <div class="freshness"><span class="status-dot"></span> what your dashboard looks like in Sandstone</div>
                 <button class="badge pdf-btn no-pdf" onclick="_pdfMenu(this, {title: 'Sandstone theme dashboard', filename: 'xenium-sandstone-theme'})">Download PDF</button>
-                <span class="badge theme">Sandstone</span>
+                <span class="badge demo">Demo data</span> <span class="badge theme">Sandstone</span>
             </div>
         </div>
 
-        <div class="tabs">
-            <button class="tab active">Overview</button>
-            <button class="tab">Sales</button>
-            <button class="tab">Email</button>
-            <button class="tab">KPIs</button>
+                <div class="tabs" role="tablist" aria-label="Dashboard sections">
+            <button type="button" class="tab active" data-tab="kpis" role="tab" aria-selected="true" aria-controls="tab-kpis" onclick="showTab('kpis')">KPIs</button>
+            <button type="button" class="tab" data-tab="traffic" role="tab" aria-selected="false" aria-controls="tab-traffic" onclick="showTab('traffic')">Traffic</button>
+            <button type="button" class="tab" data-tab="email" role="tab" aria-selected="false" aria-controls="tab-email" onclick="showTab('email')">Email</button>
+            <button type="button" class="tab" data-tab="sales" role="tab" aria-selected="false" aria-controls="tab-sales" onclick="showTab('sales')">Sales</button>
         </div>
 
-        <div class="kpi-grid">
+        <!-- ===== KPIs tab ===== -->
+        <div class="tab-section" id="tab-kpis" role="tabpanel">
+            <div class="kpi-grid">
+                <div class="kpi-card better">
+                    <div class="kpi-label">Revenue, month to date</div>
+                    <div class="kpi-value">&pound;3,842</div>
+                    <div class="kpi-change">&pound;79.20 avg order &middot; <span class="up">&#9650; 12%</span> vs last month</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Monthly take home</div>
+                    <div class="kpi-value">&pound;3,284</div>
+                    <div class="kpi-change">&pound;558 fees &middot; 85% retained</div>
+                </div>
+                <div class="kpi-card better">
+                    <div class="kpi-label">Sales, month to date</div>
+                    <div class="kpi-value">48</div>
+                    <div class="kpi-change">2.4% conversion, 30d &middot; <span class="up">&#9650; 8</span> vs last month</div>
+                </div>
+                <div class="kpi-card amber">
+                    <div class="kpi-label">Visits, month to date</div>
+                    <div class="kpi-value">5,120</div>
+                    <div class="kpi-change">170 avg per day &middot; <span class="up">&#9650; 9%</span> vs last month</div>
+                </div>
+                <div class="kpi-card amber">
+                    <div class="kpi-label">Email list</div>
+                    <div class="kpi-value">2,148</div>
+                    <div class="kpi-change">+64 new this month &middot; 47.2% open rate</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card" style="grid-column:1/-1">
+                    <div class="chart-header">
+                        <span class="chart-badge">12 MONTHS</span>
+                        <div class="chart-title">Revenue Trend</div>
+                        <div class="chart-subtitle">Revenue per month, GBP, demo numbers</div>
+                    </div>
+                    <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="chart-header">
+                    <span class="chart-badge" style="background:var(--purple-dim, rgba(168,85,247,0.15)); color:var(--purple, #4a86c6);">BENCHMARKS</span>
+                    <div class="chart-title">Current month vs benchmarks</div>
+                    <div class="chart-subtitle">How the last 30 days stack up against typical targets</div>
+                </div>
+                <table class="recent-table" id="benchmarkTable">
+                    <thead><tr><th>Metric</th><th class="num">Current</th><th class="num">Last month</th><th>Benchmark</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== Traffic tab ===== -->
+        <div class="tab-section" id="tab-traffic" role="tabpanel" style="display:none">
+            <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
             <div class="kpi-card better">
-                <div class="kpi-label">Revenue, month to date</div>
-                <div class="kpi-value">&pound;3,842</div>
-                <div class="kpi-change">&pound;79.20 avg order &middot; <span class="up">&#9650; 12%</span> vs last month</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Monthly take home</div>
-                <div class="kpi-value">&pound;3,284</div>
-                <div class="kpi-change">&pound;558 fees &middot; 85% retained</div>
-            </div>
-            <div class="kpi-card better">
-                <div class="kpi-label">Sales, month to date</div>
-                <div class="kpi-value">48</div>
-                <div class="kpi-change">2.4% conversion, 30d &middot; <span class="up">&#9650; 8</span> vs last month</div>
-            </div>
-            <div class="kpi-card">
                 <div class="kpi-label">Visits, month to date</div>
                 <div class="kpi-value">5,120</div>
                 <div class="kpi-change">170 avg per day &middot; <span class="up">&#9650; 9%</span> vs last month</div>
             </div>
             <div class="kpi-card amber">
-                <div class="kpi-label">Email list</div>
+                <div class="kpi-label">Unique visitors</div>
+                <div class="kpi-value">3,850</div>
+                <div class="kpi-change">75.2% of all visits</div>
+            </div>
+            <div class="kpi-card better">
+                <div class="kpi-label">Avg session</div>
+                <div class="kpi-value">2m 40s</div>
+                <div class="kpi-change">&middot; <span class="up">&#9650; 12s</span> vs last month</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Pages per visit</div>
+                <div class="kpi-value">3.2</div>
+                <div class="kpi-change">&middot; <span class="up">&#9650; 0.2</span> vs last month</div>
+            </div>
+        </div>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-badge">30 DAYS</span>
+                        <div class="chart-title">Traffic</div>
+                        <div class="chart-subtitle">Visitors per day, last 30 days</div>
+                    </div>
+                    <div class="chart-container"><canvas id="trafficChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Traffic Channels</div>
+                        <div class="chart-subtitle">This month vs last month</div>
+                    </div>
+                    <div class="chart-container"><canvas id="channelsChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="chart-header">
+                    <div class="chart-title">Top Pages</div>
+                    <div class="chart-subtitle">Visits per page, last 30 days</div>
+                </div>
+                <table class="recent-table">
+                    <thead><tr><th>Page</th><th class="num">Visits</th><th class="num">Share</th><th class="num">Avg time</th></tr></thead>
+                    <tbody>
+                        <tr><td class="strong">/ (home)</td><td class="num">1,120</td><td class="num">21.9%</td><td class="num">2m 10s</td></tr>
+                        <tr><td class="strong">/free-course</td><td class="num">748</td><td class="num">14.6%</td><td class="num">3m 05s</td></tr>
+                        <tr><td class="strong">/articles/machinist-tips</td><td class="num">512</td><td class="num">10.0%</td><td class="num">2m 44s</td></tr>
+                        <tr><td class="strong">/pricing</td><td class="num">388</td><td class="num">7.6%</td><td class="num">1m 51s</td></tr>
+                        <tr><td class="strong">/about</td><td class="num">265</td><td class="num">5.2%</td><td class="num">2m 05s</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== Email tab ===== -->
+        <div class="tab-section" id="tab-email" role="tabpanel" style="display:none">
+            <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
+            <div class="kpi-card better">
+                <div class="kpi-label">Subscribers</div>
                 <div class="kpi-value">2,148</div>
-                <div class="kpi-change">+64 new this month &middot; 47.2% open rate</div>
+                <div class="kpi-change">+64 new this month</div>
+            </div>
+            <div class="kpi-card amber">
+                <div class="kpi-label">Open rate, 30d</div>
+                <div class="kpi-value">47.2%</div>
+                <div class="kpi-change"><span class="up">&#9650; 1.3pp</span> vs last month</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Click rate, 30d</div>
+                <div class="kpi-value">5.8%</div>
+                <div class="kpi-change"><span class="up">&#9650; 0.3pp</span> vs last month</div>
+            </div>
+            <div class="kpi-card amber">
+                <div class="kpi-label">Unsubscribes, 30d</div>
+                <div class="kpi-value">8</div>
+                <div class="kpi-change">0.4% of list &middot; healthy</div>
+            </div>
+        </div>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-badge" style="background:var(--purple-dim, rgba(168,85,247,0.15)); color:var(--purple, #4a86c6);">CAMPAIGNS</span>
+                        <div class="chart-title">Campaign Performance</div>
+                        <div class="chart-subtitle">Open and click rate by month, last 6 months</div>
+                    </div>
+                    <div class="chart-container"><canvas id="chartEmailMonthly"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-badge">12 MONTHS</span>
+                        <div class="chart-title">Email List Growth</div>
+                        <div class="chart-subtitle">Total subscribers over the last year</div>
+                    </div>
+                    <div class="chart-container"><canvas id="chartListGrowth"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="chart-header">
+                    <div class="chart-title">Recent Campaigns</div>
+                    <div class="chart-subtitle">Latest email sends and results</div>
+                </div>
+                <table class="recent-table">
+                    <thead><tr><th>Campaign</th><th>Sent</th><th class="num">Open Rate</th><th class="num">Clicks</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td class="strong">October Offer</td><td>2,140</td><td class="num">48.1%</td><td class="num">112</td><td><span class="pill">Sent</span></td></tr>
+                        <tr><td class="strong">Autumn Roundup</td><td>2,096</td><td class="num">45.9%</td><td class="num">98</td><td><span class="pill">Sent</span></td></tr>
+                        <tr><td class="strong">New Course Launch</td><td>2,084</td><td class="num">52.3%</td><td class="num">143</td><td><span class="pill">Sent</span></td></tr>
+                        <tr><td class="strong">Weekly Digest</td><td>2,071</td><td class="num">41.7%</td><td class="num">71</td><td><span class="pill dim">Draft</span></td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="chart-grid">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <span class="chart-badge">12 MONTHS</span>
-                    <div class="chart-title">Revenue Trend</div>
-                    <div class="chart-subtitle">Revenue per month, GBP</div>
-                </div>
-                <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+        <!-- ===== Sales tab ===== -->
+        <div class="tab-section" id="tab-sales" role="tabpanel" style="display:none">
+            <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
+            <div class="kpi-card better">
+                <div class="kpi-label">Revenue, month to date</div>
+                <div class="kpi-value">&pound;3,842</div>
+                <div class="kpi-change">48 sales &middot; <span class="up">&#9650; 12%</span> vs last month</div>
             </div>
-            <div class="chart-card">
-                <div class="chart-header">
-                    <span class="chart-badge blue">30 DAYS</span>
-                    <div class="chart-title">Traffic</div>
-                    <div class="chart-subtitle">Visitors per day, last 30 days</div>
+            <div class="kpi-card amber">
+                <div class="kpi-label">Sales, month to date</div>
+                <div class="kpi-value">48</div>
+                <div class="kpi-change"><span class="up">&#9650; 8</span> vs last month</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Conversion rate</div>
+                <div class="kpi-value">2.4%</div>
+                <div class="kpi-change">of visits, 30d</div>
+            </div>
+            <div class="kpi-card amber">
+                <div class="kpi-label">Take home</div>
+                <div class="kpi-value">85%</div>
+                <div class="kpi-change">&pound;558 platform fees</div>
+            </div>
+        </div>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-badge" style="background:var(--purple-dim, rgba(168,85,247,0.15)); color:var(--purple, #4a86c6);">MTD</span>
+                        <div class="chart-title">Sales by Source</div>
+                        <div class="chart-subtitle">Revenue share by channel, month to date</div>
+                    </div>
+                    <div class="chart-container"><canvas id="salesChart"></canvas></div>
                 </div>
-                <div class="chart-container"><canvas id="trafficChart"></canvas></div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-badge">30 DAYS</span>
+                        <div class="chart-title">Sales Funnel</div>
+                        <div class="chart-subtitle">Visit to sale, last 30 days</div>
+                    </div>
+                    <div class="chart-container"><canvas id="chartSalesFunnel"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="chart-header">
+                    <div class="chart-title">Recent Sales</div>
+                    <div class="chart-subtitle">Most recent orders, demo rows</div>
+                </div>
+                <table class="recent-table">
+                    <thead><tr><th>Date</th><th>Product</th><th>Source</th><th class="num">Amount</th></tr></thead>
+                    <tbody>
+                        <tr><td class="strong">Oct 13</td><td>Course Bundle</td><td>Organic</td><td class="num">&pound;197</td></tr>
+                        <tr><td class="strong">Oct 12</td><td>Starter Course</td><td>Email</td><td class="num">&pound;47</td></tr>
+                        <tr><td class="strong">Oct 11</td><td>Course Bundle</td><td>Organic</td><td class="num">&pound;197</td></tr>
+                        <tr><td class="strong">Oct 9</td><td>One-to-One Session</td><td>Direct</td><td class="num">&pound;95</td></tr>
+                        <tr><td class="strong">Oct 8</td><td>Course Bundle</td><td>Email</td><td class="num">&pound;197</td></tr>
+                        <tr><td class="strong">Oct 7</td><td>Starter Course</td><td>Social</td><td class="num">&pound;47</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="chart-grid" style="margin-bottom: 14px;">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div class="chart-title">Traffic Channels</div>
-                    <div class="chart-subtitle">This month vs last month</div>
-                </div>
-                <div class="chart-container"><canvas id="channelsChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-header">
-                    <span class="chart-badge amber">MTD</span>
-                    <div class="chart-title">Sales by Source</div>
-                    <div class="chart-subtitle">Revenue share by channel</div>
-                </div>
-                <div class="chart-container"><canvas id="salesChart"></canvas></div>
-            </div>
-        </div>
-
-        <div class="table-card">
-            <div class="chart-header">
-                <div class="chart-title">Recent Campaigns</div>
-                <div class="chart-subtitle">Latest email sends and results</div>
-            </div>
-            <table class="recent-table">
-                <thead><tr><th>Campaign</th><th>Sent</th><th class="num">Open Rate</th><th class="num">Clicks</th><th>Status</th></tr></thead>
-                <tbody>
-                    <tr><td class="strong">October Offer</td><td>2,140</td><td class="num">48.1%</td><td class="num">112</td><td><span class="pill">Sent</span></td></tr>
-                    <tr><td class="strong">Autumn Roundup</td><td>2,096</td><td class="num">45.9%</td><td class="num">98</td><td><span class="pill">Sent</span></td></tr>
-                    <tr><td class="strong">New Course Launch</td><td>2,084</td><td class="num">52.3%</td><td class="num">143</td><td><span class="pill">Sent</span></td></tr>
-                    <tr><td class="strong">Weekly Digest</td><td>2,071</td><td class="num">41.7%</td><td class="num">71</td><td><span class="pill dim">Draft</span></td></tr>
-                </tbody>
-            </table>
-        </div>
 
         <div class="footer-note">
             Sandstone is one of the standard looks for Xenium Designs dashboards, our light theme for
@@ -271,78 +428,254 @@
         </div>
     </div>
 
-    <script>
+        <script>
+        /* theme chart defaults */
         Chart.defaults.color = '#6a7280';
-        Chart.defaults.borderColor = 'rgba(51, 65, 79, 0.14)';
-        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.borderColor = 'rgba(51,65,79,0.14)';
+        Chart.defaults.font.family = 'Inter, sans-serif';
         Chart.defaults.plugins.legend.labels.boxWidth = 10;
         Chart.defaults.plugins.legend.labels.usePointStyle = true;
 
-        function grad(ctx, hex) {
+        /* ---------- demo data (all invented, for illustration only) ---------- */
+        const MONTHS = ['Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
+        const REV_12MO = [2100, 2450, 1980, 2600, 2900, 2750, 3100, 2950, 3400, 3600, 3520, 3842];
+        const VISITS_30D = [120,140,125,160,180,150,135,145,170,190,155,140,128,165,185,175,152,138,167,192,178,156,132,149,173,158,144,171,188,163];
+        const FUNNEL_STAGES = ['Visits','Product views','Add to cart','Checkout','Sales'];
+        const FUNNEL_VALUES = [5120, 1840, 210, 96, 48];
+        const EMAIL_6MO = ['May','Jun','Jul','Aug','Sep','Oct'];
+        const OPEN_6MO = [41.9, 44.1, 42.7, 45.6, 46.3, 47.2];
+        const CLICK_6MO = [4.9, 5.2, 5.0, 5.5, 5.7, 5.8];
+        const LIST_12MO = [1120, 1188, 1240, 1301, 1389, 1502, 1655, 1759, 1882, 1965, 2084, 2148];
+        const BENCH = [
+            ['Visits, 30d', '5,120', '4,700', '5,000+', 'good'],
+            ['Conversion rate', '2.4%', '2.2%', '2-4%', 'good'],
+            ['Avg order value', '\u00a380.04', '\u00a376.10', '\u00a360-120', 'good'],
+            ['Email open rate', '47.2%', '45.9%', '40%+', 'good'],
+            ['Email click rate', '5.8%', '5.5%', '3-5%', 'good'],
+            ['New subscribers', '64', '58', '40+', 'good'],
+            ['Refund rate', '1.2%', '1.0%', 'under 2%', 'watch'],
+            ['Returning visitors', '22%', '26%', '25%+', 'watch']
+        ];
+
+        window._pdfChartRefs = {};
+        const chartRefs = window._pdfChartRefs;
+
+        function gradFill(ctx, hex) {
             const g = ctx.createLinearGradient(0, 0, 0, 260);
-            g.addColorStop(0, hex + '22');
+            g.addColorStop(0, hex + '55');
             g.addColorStop(1, hex + '00');
             return g;
         }
 
-        const months = ['Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
-        new Chart(document.getElementById('revenueChart'), {
-            type: 'line',
-            data: { labels: months, datasets: [{
-                label: 'Revenue', data: [2100, 2450, 1980, 2600, 2900, 2750, 3100, 2950, 3400, 3600, 3520, 3842],
-                borderColor: '#4a86c6', backgroundColor: c => grad(c.chart.ctx, '#4a86c6'), fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
-            }]},
-            options: { maintainAspectRatio: false,
-                scales: { x: { grid: { display: false }, ticks: { color: '#6a7280', font: { size: 10 } } },
-                          y: { grid: { color: 'rgba(51, 65, 79, 0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 } } } } }
-        });
+        function axes() {
+            return {
+                x: { grid: { display: false }, ticks: { color: '#6a7280', font: { size: 10 } } },
+                y: { grid: { color: 'rgba(51,65,79,0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 } } }
+            };
+        }
 
-        const days = Array.from({length: 30}, (_, i) => i + 1);
-        const visits = [120,140,125,160,180,150,135,145,170,190,155,140,128,165,185,175,152,138,167,192,178,156,132,149,173,158,144,171,188,163];
-        new Chart(document.getElementById('trafficChart'), {
-            type: 'line',
-            data: { labels: days, datasets: [{ label: 'Visitors', data: visits, borderColor: '#9cc4de', backgroundColor: c => grad(c.chart.ctx, '#9cc4de'), fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 }]},
-            options: { maintainAspectRatio: false,
-                scales: { x: { grid: { display: false }, ticks: { color: '#6a7280', font: { size: 10 }, maxTicksLimit: 10 } },
-                          y: { grid: { color: 'rgba(51, 65, 79, 0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 } } } } }
-        });
-
-        new Chart(document.getElementById('channelsChart'), {
-            type: 'bar',
-            data: { labels: ['Organic Search','Direct','Social','Referral','Email'], datasets: [
-                { label: 'This month', data: [2600, 1150, 620, 430, 320], backgroundColor: '#4a86c6', borderRadius: 3 },
-                { label: 'Last month', data: [2350, 1080, 575, 460, 290], backgroundColor: '#9cc4de', borderRadius: 3 }
-            ]},
-            options: { maintainAspectRatio: false,
-                scales: { x: { grid: { display: false }, ticks: { color: '#6a7280', font: { size: 10 } } },
-                          y: { grid: { color: 'rgba(51, 65, 79, 0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 } } } } }
-        });
-
-        new Chart(document.getElementById('salesChart'), {
-            type: 'doughnut',
-            data: { labels: ['Teachable', 'Website', 'Affiliate', 'Other'], datasets: [{
-                data: [58, 24, 12, 6],
-                backgroundColor: ['#4a86c6', '#9cc4de', '#2dbe4c', '#b98a3c'],
-                borderColor: '#ffffff', borderWidth: 2
-            }]},
-            options: { maintainAspectRatio: false, cutout: '62%',
-                plugins: { legend: { position: 'bottom', labels: { color: '#6a7280', font: { size: 11 } } } } }
-        });
-
-        /* ---------- printer-friendly PDF mode (pure white for B/W printing) ---------- */
-        window._pdfPrintOn = function () {
-            const dash = document.querySelector('.dashboard');
-            window._pdfSavedDashBg = dash ? dash.style.background : '';
-            window._pdfSavedBodyBg = document.body.style.background;
-            if (dash) dash.style.background = '#ffffff';
-            document.body.style.background = '#ffffff';
-            return Promise.resolve();
+        /* chart configs get created lazily per tab so hidden canvases never size to 0 */
+        const chartBuild = {
+            kpis: function () {
+                chartRefs.revenue = new Chart(document.getElementById('revenueChart'), {
+                    type: 'line',
+                    data: { labels: MONTHS, datasets: [{
+                        label: 'Revenue', data: REV_12MO,
+                        borderColor: '#4a86c6', backgroundColor: '#4a86c655',
+                        fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false, scales: axes() }
+                });
+                const statusPill = { good: '<span class="pill">Good</span>', watch: '<span class="pill dim" style="color:#b98a3c">Watch</span>' };
+                document.getElementById('benchmarkTable').querySelector('tbody').innerHTML = BENCH.map(function (r) {
+                    return '<tr><td class="strong">' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td>' + r[3] + '</td><td>' + statusPill[r[4]] + '</td></tr>';
+                }).join('');
+            },
+            traffic: function () {
+                chartRefs.traffic = new Chart(document.getElementById('trafficChart'), {
+                    type: 'line',
+                    data: { labels: VISITS_30D.map(function (_, i) { return i + 1; }), datasets: [{
+                        label: 'Visitors', data: VISITS_30D,
+                        borderColor: '#9cc4de', backgroundColor: '#9cc4de55',
+                        fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false,
+                        scales: { x: { grid: { display: false }, ticks: { color: '#6a7280', font: { size: 10 }, maxTicksLimit: 10 } },
+                                  y: { grid: { color: 'rgba(51,65,79,0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 } } } } }
+                });
+                chartRefs.channels = new Chart(document.getElementById('channelsChart'), {
+                    type: 'bar',
+                    data: { labels: ['Organic Search','Direct','Social','Referral','Email'], datasets: [
+                        { label: 'This month', data: [2600, 1150, 620, 430, 320], backgroundColor: '#4a86c6', borderRadius: 4 },
+                        { label: 'Last month', data: [2350, 1080, 575, 460, 290], backgroundColor: '#9cc4de', borderRadius: 4 }
+                    ]},
+                    options: { maintainAspectRatio: false, scales: axes() }
+                });
+            },
+            email: function () {
+                chartRefs.emailMonthly = new Chart(document.getElementById('chartEmailMonthly'), {
+                    type: 'bar',
+                    data: { labels: EMAIL_6MO, datasets: [
+                        { label: 'Open rate', data: OPEN_6MO, backgroundColor: '#4a86c6', borderRadius: 4 },
+                        { label: 'Click rate', data: CLICK_6MO, backgroundColor: '#9cc4de', borderRadius: 4 }
+                    ]},
+                    options: { maintainAspectRatio: false,
+                        scales: { x: { grid: { display: false }, ticks: { color: '#6a7280', font: { size: 10 } } },
+                                  y: { grid: { color: 'rgba(51,65,79,0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 }, callback: function (v) { return v + '%'; } } } } }
+                });
+                chartRefs.listGrowth = new Chart(document.getElementById('chartListGrowth'), {
+                    type: 'line',
+                    data: { labels: MONTHS, datasets: [{
+                        label: 'Subscribers', data: LIST_12MO,
+                        borderColor: '#4a86c6', backgroundColor: '#4a86c655',
+                        fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false, scales: axes() }
+                });
+            },
+            sales: function () {
+                chartRefs.sales = new Chart(document.getElementById('salesChart'), {
+                    type: 'doughnut',
+                    data: { labels: ['Students','Website','Affiliate','Other'], datasets: [{
+                        data: [58, 24, 12, 6],
+                        backgroundColor: ['#4a86c6', '#9cc4de', '#2dbe4c', '#b98a3c'],
+                        borderColor: '#ffffff', borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false, cutout: '62%',
+                        plugins: { legend: { position: 'bottom', labels: { color: '#6a7280', font: { size: 11 } } } } }
+                });
+                chartRefs.funnel = new Chart(document.getElementById('chartSalesFunnel'), {
+                    type: 'bar',
+                    data: { labels: FUNNEL_STAGES, datasets: [{
+                        label: 'People', data: FUNNEL_VALUES,
+                        backgroundColor: '#4a86c6', borderRadius: 4
+                    }]},
+                    options: { maintainAspectRatio: false, indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { grid: { color: 'rgba(51,65,79,0.10)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#6a7280', font: { size: 10 } } },
+                                  y: { grid: { display: false }, border: { display: false }, ticks: { color: '#6a7280', font: { size: 10 } } } } }
+                });
+            }
         };
-        window._pdfPrintOff = function () {
-            const dash = document.querySelector('.dashboard');
-            if (dash) dash.style.background = window._pdfSavedDashBg || '';
-            document.body.style.background = window._pdfSavedBodyBg || '';
-            return Promise.resolve();
+
+        /* lazy-create a tab's charts the first time its tab is shown */
+        const builtTabs = {};
+        function buildTabCharts(name) {
+            if (builtTabs[name] || !chartBuild[name]) return;
+            builtTabs[name] = true;
+            chartBuild[name]();
+        }
+
+        /* ---------- tab switching (KPIs / Traffic / Email / Sales) ---------- */
+        function showTab(name) {
+            const TAB_NAMES = ['kpis', 'traffic', 'email', 'sales'];
+            if (TAB_NAMES.indexOf(name) === -1) name = 'kpis';
+            const first = !document.querySelector('.tab-section [style*="display:none"]') && !builtTabs.kpis;
+            ['kpis', 'traffic', 'email', 'sales'].forEach(function (tabName) {
+                const section = document.getElementById('tab-' + tabName);
+                if (section) section.style.display = (tabName === name) ? '' : 'none';
+            });
+            document.querySelectorAll('.tabs .tab').forEach(function (btn) {
+                const on = btn.dataset.tab === name;
+                btn.classList.toggle('active', on);
+                btn.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            buildTabCharts(name);
+            /* charts created while hidden can come out at 0 size, force a resize pass */
+            requestAnimationFrame(function () {
+                Object.values(chartRefs).forEach(function (c) {
+                    try { c.resize(); } catch (e) {}
+                });
+            });
+            try { sessionStorage.setItem('xd_theme_demo_tab', name); } catch (e) {}
+        }
+
+        /* keyboard support on the tablist: left and right arrows move between tabs */
+        document.querySelectorAll('.tabs .tab').forEach(function (btn, i, all) {
+            btn.addEventListener('keydown', function (e) {
+                let next = null;
+                if (e.key === 'ArrowRight') next = all[(i + 1) % all.length];
+                if (e.key === 'ArrowLeft') next = all[(i - 1 + all.length) % all.length];
+                if (next) { next.focus(); next.click(); }
+            });
+        });
+
+        /* restore last tab or start on KPIs */
+        let startTab = 'kpis';
+        try { startTab = sessionStorage.getItem('xd_theme_demo_tab') || startTab; } catch (e) {}
+        showTab(startTab);
+
+        /* ---------- printer-friendly PDF mode (applies light Sandstone-style look) ---------- */
+        const RECOLOR_MAP = {
+            '#4a86c6': '#4a86c6', '#9cc4de': '#9cc4de', '#2dbe4c': '#2dbe4c',
+            '#b98a3c': '#b98a3c', '#d63232': '#d63232', '#33414f': '#33414f',
+            '#ffffff': '#ffffff'
+        };
+        const RECOLOR_MAP_BACK = {};
+        Object.keys(RECOLOR_MAP).forEach(function (k) { RECOLOR_MAP_BACK[RECOLOR_MAP[k]] = k; });
+
+        function recolorValue(val, map) {
+            if (typeof val === 'string') {
+                const bare = val.slice(0, 7);
+                if (map[bare]) {
+                    if (val.length > 7) { /* keep alpha suffix when present */
+                        // hex8 fill like '#a855f755': swap the 6 rgb digits, keep the 2 alpha digits
+                        return map[bare] + val.slice(7);
+                    }
+                    return map[val];
+                }
+            } else if (Array.isArray(val)) {
+                return val.map(function (v) { return recolorValue(v, map); });
+            }
+            return val;
+        }
+
+        window._recolourPdfCharts = function (mode) {
+            const light = mode === 'light';
+            const map = light ? RECOLOR_MAP : RECOLOR_MAP_BACK;
+            Object.values(chartRefs).forEach(function (ch) {
+                ch.data.datasets.forEach(function (ds) {
+                    if (ds.borderColor) ds.borderColor = recolorValue(ds.borderColor, map);
+                    if (ds.backgroundColor) ds.backgroundColor = recolorValue(ds.backgroundColor, map);
+                });
+                if (ch.options && ch.options.scales) {
+                    Object.values(ch.options.scales).forEach(function (ax) {
+                        if (ax.ticks) ax.ticks.color = light ? '#6a7280' : '#6a7280';
+                        if (ax.grid && ax.grid.color && typeof ax.grid.color === 'string') {
+                            ax.grid.color = light ? 'rgba(51,65,79,0.10)' : 'rgba(51,65,79,0.10)';
+                        }
+                    });
+                }
+                ch.update('none');
+            });
+        };
+
+        window._pdfPrintOn = async function () {
+            const r = document.documentElement.style;
+            window._pdfSavedInline = ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
+                .filter(function (k) { return r.getPropertyValue(k) !== ''; });
+            r.setProperty('--bg-primary', '#ffffff'); r.setProperty('--bg-card', '#ffffff');
+            r.setProperty('--bg-card-hover', '#f7f7f7'); r.setProperty('--border-color', '#b9bfc6');
+            r.setProperty('--text-primary', '#33414f'); r.setProperty('--text-secondary', '#6a7280');
+            r.setProperty('--text-muted', '#8a929b');
+            /* make sure the visible tab's charts exist before the capture (they build lazily per tab) */
+            const visible = document.querySelector('.tab-section:not([style*="display:none"])');
+            if (visible) {
+                // force-build every tab's charts into memory so the recolour pass covers them
+                Object.keys(chartBuild).forEach(function (k) { buildTabCharts(k); });
+            }
+            window._recolourPdfCharts('light');
+            await new Promise(function (r2) { setTimeout(r2, 400); });
+        };
+        window._pdfPrintOff = async function () {
+            if (window._pdfSavedInline.length) {
+                window._pdfSavedInline.forEach(function (k) { r.removeProperty(k); });
+            } else {
+                ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
+                    .forEach(function (k) { r.removeProperty(k); });
+            }
+            window._recolourPdfCharts('dark');
+            await new Promise(function (r2) { setTimeout(r2, 200); });
         };
     </script>
 </body>
