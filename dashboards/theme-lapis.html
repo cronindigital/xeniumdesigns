@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="pdf-export.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -161,11 +162,13 @@
             .theme-links { top: 64px; right: 10px; }
             .back-link { top: 10px; left: 10px; padding: 6px 10px; font-size: 12px; }
         }
+.pdf-btn { cursor: pointer; font-family: inherit; transition: color 0.15s, border-color 0.15s; }
+.pdf-btn:hover { color: var(--text-primary); border-color: var(--blue); }
     </style>
 </head>
 <body>
-    <a href="../examples.html" class="back-link">&larr; Back to Examples</a>
-    <div class="theme-links">
+    <a href="../examples.html" class="back-link no-pdf">&larr; Back to Examples</a>
+    <div class="theme-links no-pdf">
         <a href="theme-amethyst.html">Amethyst</a>
         <a href="theme-lapis.html" class="active">Lapis</a>
         <a href="theme-sandstone.html">Sandstone</a>
@@ -178,6 +181,7 @@
             </div>
             <div class="header-right">
                 <div class="freshness"><span class="status-dot"></span> what your dashboard looks like in Lapis</div>
+                <button class="badge pdf-btn no-pdf" onclick="_exportPdf({title: 'Lapis theme dashboard', filename: 'xenium-lapis-theme', button: this})">Download PDF</button>
                 <span class="badge theme">Lapis</span>
             </div>
         </div>
