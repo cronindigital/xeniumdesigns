@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" role="img" aria-label="Xenium Designs">
+  <!-- === Xenium Designs logo : SQUARE badge =====================
+       Colours from xeniumdesigns.com site CSS:
+       purple #a855f7 (primary), indigo #6366f1 / #818cf8,
+       pink #ec4899, dark bg #0a0a0f.
+       Layout: ring icon top, stacked wordmark, tagline. All text
+       anchor=middle centered on 320 so any font renders centered. -->
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"    stop-color="#ec4899"/>
+      <stop offset="0.5"  stop-color="#a855f7"/>
+      <stop offset="1"    stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#818cf8" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#818cf8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ============  I C O N  : XD ring badge  ============ -->
+  <g transform="translate(320,190)">
+    <circle r="112" fill="#0a0a0f"/>
+    <circle r="112" fill="none" stroke="url(#grad)" stroke-width="12"/>
+    <!-- data-lattice: chevrons + axis line + data points, subtle -->
+    <g fill="none" stroke="url(#edge)" stroke-width="3.5" stroke-linecap="round">
+      <line x1="-48" y1="42" x2="-10" y2="4"/>
+      <line x1="10"  y1="-4" x2="48"  y2="-42"/>
+      <line x1="-30" y1="30" x2="30"  y2="-30"/>
+      <circle cx="-30" cy="30" r="4"/>
+      <circle cx="30"  cy="-30" r="4"/>
+    </g>
+    <!-- bold X, gradient stroke -->
+    <g stroke="url(#grad)" stroke-width="17" stroke-linecap="round">
+      <line x1="-40" y1="-44" x2="40" y2="44"/>
+      <line x1="40"  y1="-44" x2="-40" y2="44"/>
+    </g>
+  </g>
+
+  <!-- ============  W O R D M A R K  ============ -->
+  <g font-family="Inter, Arial, sans-serif" fill="#fafafa" text-anchor="middle">
+    <text x="320" y="435" font-size="88" font-weight="800" letter-spacing="1">Xenium</text>
+    <text x="320" y="525" font-size="88" font-weight="800" letter-spacing="1" fill="url(#grad)">Designs</text>
+    <!-- short gradient rule tying icon gradient into the tagline -->
+    <rect x="220" y="548" width="200" height="4" rx="2" fill="url(#grad)" opacity="0.8"/>
+    <text x="320" y="588" font-size="15" font-weight="600" letter-spacing="4.5" fill="#a1a1aa">CUSTOM BUSINESS DASHBOARDS</text>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+{
+ "post1-tabs.png": {
+  "status": 400,
+  "response": "{\"message\":[\"posts.0.value.0.image.each value in nested property image must be either object or array\"],\"error\":\"Bad Request\",\"statusCode\":400}"
+ },
+ "post2-fiveminutes.png": {
+  "status": 400,
+  "response": "{\"message\":[\"posts.0.value.0.image.each value in nested property image must be either object or array\"],\"error\":\"Bad Request\",\"statusCode\":400}"
+ },
+ "post3-monday.png": {
+  "status": 400,
+  "response": "{\"message\":[\"posts.0.value.0.image.each value in nested property image must be either object or array\"],\"error\":\"Bad Request\",\"statusCode\":400}"
+ }
+}

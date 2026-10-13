@@ -1,0 +1,32 @@
+{
+ "post1-nine-tabs": {
+  "date": "2026-09-16T08:00:00.000Z",
+  "status": 201,
+  "response": [
+   {
+    "postId": "cmu2how7r001gmk73qov93k1h",
+    "integration": "cmtjzc5am0007p76kynz6xvky"
+   }
+  ]
+ },
+ "post2-fiveminutes": {
+  "date": "2026-09-18T08:00:00.000Z",
+  "status": 201,
+  "response": [
+   {
+    "postId": "cmu2hox62001hmk733nfgn6mk",
+    "integration": "cmtjzc5am0007p76kynz6xvky"
+   }
+  ]
+ },
+ "post3-before-coffee": {
+  "date": "2026-09-20T08:00:00.000Z",
+  "status": 201,
+  "response": [
+   {
+    "postId": "cmu2hoy3y001imk7369e8npeq",
+    "integration": "cmtjzc5am0007p76kynz6xvky"
+   }
+  ]
+ }
+}
