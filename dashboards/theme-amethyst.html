@@ -162,7 +162,7 @@
             </div>
             <div class="header-right">
                 <div class="freshness"><span class="status-dot"></span> what your dashboard looks like in Amethyst</div>
-                <button class="badge pdf-btn no-pdf" onclick="_exportPdf({title: 'Amethyst theme dashboard', filename: 'xenium-amethyst-theme', button: this})">Download PDF</button>
+                <button class="badge pdf-btn no-pdf" onclick="_pdfMenu(this, {title: 'Amethyst theme dashboard', filename: 'xenium-amethyst-theme'})">Download PDF</button>
                 <span class="badge theme">Amethyst</span>
             </div>
         </div>
@@ -277,7 +277,9 @@
         }
 
         const months = ['Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
-        new Chart(document.getElementById('revenueChart'), {
+        window._pdfChartRefs = {};
+
+        window._pdfChartRefs.revenue = new Chart(document.getElementById('revenueChart'), {
             type: 'line',
             data: { labels: months, datasets: [{
                 label: 'Revenue', data: [2100, 2450, 1980, 2600, 2900, 2750, 3100, 2950, 3400, 3600, 3520, 3842],
@@ -290,7 +292,7 @@
 
         const days = Array.from({length: 30}, (_, i) => i + 1);
         const visits = [120,140,125,160,180,150,135,145,170,190,155,140,128,165,185,175,152,138,167,192,178,156,132,149,173,158,144,171,188,163];
-        new Chart(document.getElementById('trafficChart'), {
+        window._pdfChartRefs.traffic = new Chart(document.getElementById('trafficChart'), {
             type: 'line',
             data: { labels: days, datasets: [{ label: 'Visitors', data: visits, borderColor: '#06b6d4', backgroundColor: c => grad(c.chart.ctx, '#06b6d4'), fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 }]},
             options: { maintainAspectRatio: false,
@@ -298,7 +300,7 @@
                           y: { grid: { color: 'rgba(30,30,42,0.6)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#8888a0', font: { size: 10 } } } } }
         });
 
-        new Chart(document.getElementById('channelsChart'), {
+        window._pdfChartRefs.channels = new Chart(document.getElementById('channelsChart'), {
             type: 'bar',
             data: { labels: ['Organic Search','Direct','Social','Referral','Email'], datasets: [
                 { label: 'This month', data: [2600, 1150, 620, 430, 320], backgroundColor: '#a855f7', borderRadius: 4 },
@@ -309,7 +311,7 @@
                           y: { grid: { color: 'rgba(30,30,42,0.6)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#8888a0', font: { size: 10 } } } } }
         });
 
-        new Chart(document.getElementById('salesChart'), {
+        window._pdfChartRefs.sales = new Chart(document.getElementById('salesChart'), {
             type: 'doughnut',
             data: { labels: ['Teachable', 'Website', 'Affiliate', 'Other'], datasets: [{
                 data: [58, 24, 12, 6],
@@ -319,6 +321,79 @@
             options: { maintainAspectRatio: false, cutout: '62%',
                 plugins: { legend: { position: 'bottom', labels: { color: '#8888a0', font: { size: 11 } } } } }
         });
-    </script>
+
+        /* swap every chart's palette for the printer-friendly PDF (Sandstone-style light colors) */
+        window._recolourPdfCharts = function (mode) {
+            const R = window._pdfChartRefs;
+            if (!R.revenue) return;
+            const light = mode === 'light';
+            const P = light ? {
+                acc1: '#4a86c6', acc2: '#9cc4de', grid: 'rgba(51,65,79,0.10)', border: 'rgba(51,65,79,0.14)',
+                tick: '#6a7280', set1: '#4a86c6', set2: '#9cc4de', dset: ['#4a86c6', '#9cc4de', '#2dbe4c', '#b98a3c'], hole: '#ffffff'
+            } : {
+                acc1: '#a855f7', acc2: '#06b6d4', grid: 'rgba(30,30,42,0.6)', border: '#1e1e2a',
+                tick: '#8888a0', set1: '#a855f7', set2: '#06b6d4', dset: ['#a855f7', '#06b6d4', '#22c55e', '#f59e0b'], hole: '#111118'
+            };
+            const g = function (ctx, hex) {
+                const gr = ctx.createLinearGradient(0, 0, 0, 260);
+                gr.addColorStop(0, hex + (light ? '22' : '55'));
+                gr.addColorStop(1, hex + '00');
+                return gr;
+            };
+            const alpha = light ? '22' : '55';
+            R.revenue.data.datasets[0].borderColor = P.acc1;
+            R.revenue.data.datasets[0].backgroundColor = c => g(c.chart.ctx, P.acc1);
+            R.traffic.data.datasets[0].borderColor = P.acc2;
+            R.traffic.data.datasets[0].backgroundColor = c => g(c.chart.ctx, P.acc2);
+            R.channels.data.datasets[0].backgroundColor = P.set1;
+            R.channels.data.datasets[1].backgroundColor = P.set2;
+            R.sales.data.datasets[0].backgroundColor = P.dset;
+            R.sales.data.datasets[0].borderColor = P.hole;
+            [R.revenue, R.traffic, R.channels, R.sales].forEach(ch => {
+                if (!ch.options.scales) return;
+                Object.values(ch.options.scales).forEach(ax => {
+                    if (ax.ticks) ax.ticks.color = P.tick;
+                    if (ax.grid && ax.grid.color !== undefined) ax.grid.color = P.grid;
+                });
+            });
+            Chart.defaults.color = P.tick;
+            Chart.defaults.borderColor = P.border;
+            Object.values(R).forEach(ch => ch.update('none'));
+        };
+
+        /* ---------- printer-friendly PDF mode ---------- */
+                window._pdfPrintOn = function () {
+            const r = document.documentElement.style, b = document.body.style;
+            window._pdfSavedInline = ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
+                .filter(k => r.getPropertyValue(k) !== '');
+            r.setProperty('--bg-primary', '#eaeaea'); r.setProperty('--bg-card', '#ffffff');
+            r.setProperty('--bg-card-hover', '#f5f5f5'); r.setProperty('--border-color', '#dde2e7');
+            r.setProperty('--text-primary', '#33414f'); r.setProperty('--text-secondary', '#6a7280');
+            r.setProperty('--text-muted', '#8a929b');
+            if (document.body.dataset.theme === 'lapis') {
+                if (!window._pdfSavedBody) window._pdfSavedBody = b.background;
+                b.background = '#eaeaea';
+            }
+            b.color = '#33414f';
+            window._recolourPdfCharts('light');
+            return Promise.resolve();
+        };
+        window._pdfPrintOff = function () {
+            const r = document.documentElement.style, b = document.body.style;
+            if (window._pdfSavedBody !== undefined) {
+                if (window._pdfSavedBody) { b.background = window._pdfSavedBody; } else { b.background = ''; b.background = ''; }
+                delete window._pdfSavedBody;
+            }
+            if (window._pdfSavedInline.length) {
+                window._pdfSavedInline.forEach(k => r.removeProperty(k));
+            } else {
+                ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
+                    .forEach(k => r.removeProperty(k));
+            }
+            b.color = '';
+            window._recolourPdfCharts('dark');
+            return Promise.resolve();
+        };
+    </script>    </script>
 </body>
 </html>
