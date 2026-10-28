@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphite Theme Dashboard Example | Xenium Designs</title>
+    <link rel="canonical" href="https://xeniumdesigns.com/dashboards/theme-graphite.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="pdf-export.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #262930;
+            --bg-card: #2d3039;
+            --bg-card-hover: #33363d;
+            --border-color: rgba(255, 255, 255, 0.07);
+            --text-primary: #f2f3f5;
+            --text-secondary: #a6acb6;
+            --text-muted: #8f96a1;
+            --good: #6fc796;
+            --good-dim: rgba(111, 199, 150, 0.13);
+            --cyan: #5bbcb9;
+            --cyan-dim: rgba(91, 188, 185, 0.13);
+            --red: #d67f8c;
+            --red-dim: rgba(214, 127, 140, 0.13);
+            --amber: #c9a86a;
+            --amber-dim: rgba(201, 168, 106, 0.13);
+            --teal: #2fb5aa;
+            --teal-dim: rgba(47, 181, 170, 0.15);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #3d434d; border-radius: 3px; }
+
+        /* ---------- shell: sidebar / main / right rail ---------- */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px minmax(0, 1fr) 300px;
+            min-height: 100vh;
+        }
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding: 26px 16px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            align-self: start;
+        }
+        .side-logo { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; padding: 0 10px 22px; }
+        .side-logo span { color: var(--teal); }
+        .side-nav { display: flex; flex-direction: column; gap: 6px; }
+        .side-item {
+            display: flex; align-items: center; gap: 12px;
+            background: none; border: none; font-family: inherit;
+            color: var(--text-secondary); font-size: 13.5px; font-weight: 600;
+            padding: 11px 14px; border-radius: 12px; cursor: pointer;
+            transition: background 0.15s, color 0.15s; text-align: left;
+        }
+        .side-item svg { width: 18px; height: 18px; flex: none; }
+        .side-item:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+        .side-item.active { background: var(--bg-card-hover); color: var(--text-primary); }
+        .side-foot { margin-top: auto; display: flex; justify-content: center; padding-top: 20px; }
+        .avatar {
+            width: 58px; height: 58px; border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #3fbdb2, #1f7a73);
+            display: flex; align-items: flex-end; justify-content: center;
+            font-weight: 800; font-size: 22px; color: rgba(255, 255, 255, 0.92);
+            position: relative;
+        }
+        .avatar::after {
+            content: ''; position: absolute; right: 1px; bottom: 1px;
+            width: 13px; height: 13px; border-radius: 50%;
+            background: #3fca6b; border: 2px solid var(--bg-card);
+        }
+
+        /* ---------- main column ---------- */
+        .main { padding: 22px 26px 50px; min-width: 0; }
+        .utility-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .back-link {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            padding: 8px 16px; border-radius: 10px; text-decoration: none;
+            color: var(--text-secondary); font-size: 13px; font-weight: 500;
+        }
+        .back-link:hover { color: var(--text-primary); }
+        .theme-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .theme-links a {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-secondary); text-decoration: none;
+            padding: 8px 14px; border-radius: 10px; font-size: 12.5px; font-weight: 500;
+        }
+        .theme-links a:hover { color: var(--text-primary); }
+        .theme-links a.active { color: var(--text-primary); border-color: var(--teal); }
+
+        .searchbar {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 12px 16px; margin-bottom: 26px;
+        }
+        .searchbar svg { width: 16px; height: 16px; color: var(--text-muted); flex: none; }
+        .searchbar input {
+            background: none; border: none; outline: none; width: 100%;
+            color: var(--text-primary); font-family: inherit; font-size: 13.5px;
+        }
+        .searchbar input::placeholder { color: var(--text-muted); }
+        .greet-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 26px; flex-wrap: wrap; }
+        .greet-row h2 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+        .greet-row .sub { color: var(--text-muted); font-size: 14px; }
+        .filters-btn {
+            display: flex; align-items: center; gap: 9px;
+            background: none; border: 1px solid rgba(255, 255, 255, 0.45);
+            color: var(--text-primary); font-family: inherit;
+            font-size: 13.5px; font-weight: 600;
+            padding: 10px 18px; border-radius: 12px; cursor: pointer;
+            transition: background 0.15s;
+        }
+        .filters-btn:hover { background: rgba(255, 255, 255, 0.06); }
+        .filters-btn svg { width: 15px; height: 15px; }
+
+        /* ---------- hero metric cards (Views / Visits / Orders) ---------- */
+        .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 18px; }
+        .metric-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 22px 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .metric-card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+        .metric-icon {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 14px;
+        }
+        .metric-icon svg { width: 18px; height: 18px; color: var(--text-primary); }
+        .metric-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+        .metric-value { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.25; }
+        .metric-sub { font-size: 12px; color: var(--text-muted); }
+
+        /* ---------- standard KPI cards (other tabs) ---------- */
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+        .kpi-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 18px; position: relative; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); transition: all 0.2s;
+        }
+        .kpi-card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+        .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--teal)); }
+        .kpi-card.better::before { background: var(--good); }
+        .kpi-card.cyan { --accent: var(--cyan); }
+        .kpi-card.amber { --accent: var(--amber); }
+        .kpi-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+        .kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+        .kpi-change { font-size: 12px; margin-top: 6px; color: var(--text-muted); }
+        .kpi-change .up { color: var(--good); }
+        .kpi-change .down { color: var(--red); }
+
+        /* ---------- charts + tables ---------- */
+        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .chart-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 20px; transition: all 0.2s; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        }
+        .chart-card:hover { background: var(--bg-card-hover); }
+        .chart-header { margin-bottom: 16px; }
+        .chart-title { font-size: 15px; font-weight: 600; }
+        .chart-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .chart-container { position: relative; height: 260px; }
+        .chart-badge {
+            float: right; font-size: 11px; font-weight: 600; padding: 3px 10px;
+            border-radius: 20px; background: var(--good-dim); color: var(--good);
+        }
+        .chart-badge.teal { background: var(--teal-dim); color: var(--teal); }
+        .chart-badge.cyan { background: var(--cyan-dim); color: var(--cyan); }
+        .table-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 20px; margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        }
+        /* drag-to-scroll tables (Xenium dashboard standard) */
+        .drag-scroll {
+            overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+            cursor: grab; padding-bottom: 4px;
+            user-select: none; -webkit-user-select: none;
+        }
+        .drag-scroll.dragging { cursor: grabbing; }
+        .drag-scroll::-webkit-scrollbar { display: none; }
+        .drag-scroll table { min-width: max-content; width: 100%; }
+        .drag-wrap { position: relative; }
+        .drag-wrap.has-more::after {
+            content: ''; position: absolute; top: 0; right: 0; bottom: 4px; width: 36px;
+            background: linear-gradient(to left, var(--bg-card), transparent);
+            pointer-events: none; opacity: 0; transition: opacity 0.2s;
+        }
+        .drag-wrap.has-more.show-fade::after { opacity: 1; }
+        .recent-table { border-collapse: collapse; font-size: 13px; }
+        .recent-table th {
+            text-align: left; color: var(--text-muted); font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .recent-table td { padding: 9px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-secondary); word-break: break-word; }
+        .recent-table tr:last-child td { border-bottom: none; }
+        .recent-table td.strong { color: var(--text-primary); font-weight: 600; }
+        .recent-table td.num, .recent-table th.num { text-align: right; }
+        .pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11.5px; font-weight: 600; background: var(--good-dim); color: var(--good); }
+        .pill.dim { background: var(--bg-primary); color: var(--text-muted); }
+        .footer-note { text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 30px; }
+        .footer-note a { color: var(--text-muted); }
+
+        /* ---------- right rail (Sales revenue) ---------- */
+        .rail { padding: 22px 20px 40px 6px; min-width: 0; }
+        .rail-card {
+            background: var(--bg-card-hover); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 22px 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        }
+        .rail-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+        .rail-row { display: flex; align-items: center; gap: 13px; padding: 11px 0; }
+        .rail-row + .rail-row { border-top: 1px solid var(--border-color); }
+        .rail-icon {
+            width: 40px; height: 40px; border-radius: 50%; flex: none;
+            background: rgba(255, 255, 255, 0.07);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .rail-icon svg { width: 17px; height: 17px; color: var(--text-primary); }
+        .rail-num { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; }
+        .rail-label { font-size: 12px; color: var(--text-muted); }
+        .rail-note { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; }
+
+        .badge {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-secondary); border-radius: 10px; padding: 8px 14px; font-size: 13px;
+        }
+        .badge.theme { color: var(--teal); border-color: rgba(47, 181, 170, 0.35); font-weight: 600; }
+        .badge.demo { color: var(--good); border-color: rgba(111, 199, 150, 0.4); font-weight: 600; }
+        .pdf-btn { cursor: pointer; font-family: inherit; transition: color 0.15s, border-color 0.15s; }
+        .pdf-btn:hover { color: var(--text-primary); border-color: var(--teal); }
+
+        /* ---------- responsive ---------- */
+        @media (max-width: 1180px) {
+            .dashboard { grid-template-columns: 220px minmax(0, 1fr); }
+            .rail { grid-column: 1 / -1; padding: 0 26px 40px; }
+            .rail-card { max-width: 560px; }
+        }
+        @media (max-width: 860px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .sidebar {
+                position: static; height: auto; align-self: auto;
+                flex-direction: row; align-items: center; gap: 10px;
+                padding: 14px 16px; border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                overflow-x: auto; scrollbar-width: none;
+            }
+            .sidebar::-webkit-scrollbar { display: none; }
+            .side-logo { padding: 0 12px 0 0; white-space: nowrap; }
+            .side-nav { flex-direction: row; gap: 4px; }
+            .side-item { padding: 9px 12px; white-space: nowrap; }
+            .side-foot { margin-top: 0; margin-left: auto; padding-top: 0; }
+            .avatar { width: 40px; height: 40px; font-size: 15px; }
+            .main { padding: 18px 14px 40px; }
+            .metric-grid { grid-template-columns: 1fr; gap: 10px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .chart-grid { grid-template-columns: 1fr; }
+            .greet-row h2 { font-size: 24px; }
+            .rail { padding: 0 14px 40px; }
+        }
+        @media (max-width: 480px) {
+            .kpi-value { font-size: 18px; }
+            .side-logo { font-size: 16px; }
+            .side-item span { display: none; }
+            .side-item { padding: 9px 11px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- ===== Sidebar ===== -->
+        <aside class="sidebar">
+            <div class="side-logo">Xenium <span>Designs</span></div>
+            <nav class="side-nav" role="tablist" aria-label="Dashboard sections">
+                <button type="button" class="side-item active" data-tab="kpis" role="tab" aria-selected="true" aria-controls="tab-kpis" onclick="showTab('kpis')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+                    <span>Dashboard</span>
+                </button>
+                <button type="button" class="side-item" data-tab="traffic" role="tab" aria-selected="false" aria-controls="tab-traffic" onclick="showTab('traffic')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>
+                    <span>Traffic</span>
+                </button>
+                <button type="button" class="side-item" data-tab="email" role="tab" aria-selected="false" aria-controls="tab-email" onclick="showTab('email')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                    <span>Email</span>
+                </button>
+                <button type="button" class="side-item" data-tab="sales" role="tab" aria-selected="false" aria-controls="tab-sales" onclick="showTab('sales')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 11 3.8H4v7l9.6 9.6a2 2 0 0 0 2.8 0l4.2-4.2a2 2 0 0 0 0-2.8Z"/><circle cx="8" cy="7.8" r="0.5"/></svg>
+                    <span>Sales</span>
+                </button>
+            </nav>
+            <div class="side-foot" aria-hidden="true">
+                <div class="avatar">D</div>
+            </div>
+        </aside>
+
+        <!-- ===== Main column ===== -->
+        <main class="main">
+            <div class="utility-row no-pdf">
+                <a href="../examples.html" class="back-link">&larr; Back to Examples</a>
+                <div class="theme-links">
+                    <a href="theme-amethyst.html">Amethyst</a>
+                    <a href="theme-lapis.html">Lapis</a>
+                    <a href="theme-sandstone.html">Sandstone</a>
+                    <a href="theme-graphite.html" class="active">Graphite</a>
+                </div>
+            </div>
+
+            <div class="searchbar no-pdf">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="text" placeholder="Search for stats" aria-label="Search for stats">
+            </div>
+
+            <div class="greet-row">
+                <div>
+                    <h2>Hello David</h2>
+                    <div class="sub">Welcome back!</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <span class="badge demo no-pdf">Demo data</span>
+                    <span class="badge theme no-pdf">Graphite</span>
+                    <button class="filters-btn no-pdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.5"/><circle cx="7" cy="17" r="2.5"/></svg>
+                        Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== Dashboard tab (matches the reference design) ===== -->
+            <div class="tab-section" id="tab-kpis" role="tabpanel">
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                        <div class="metric-label">Views</div>
+                        <div class="metric-value">500</div>
+                        <div class="metric-sub">Per minute</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5L16 8Z"/></svg></div>
+                        <div class="metric-label">Visits</div>
+                        <div class="metric-value">2,000</div>
+                        <div class="metric-sub">Per minute</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></div>
+                        <div class="metric-label">Orders</div>
+                        <div class="metric-value">5,100</div>
+                        <div class="metric-sub">Per Day</div>
+                    </div>
+                </div>
+
+                <div class="chart-grid">
+                    <div class="chart-card" style="grid-column:1/-1">
+                        <div class="chart-header">
+                            <span class="chart-badge">12 MONTHS</span>
+                            <div class="chart-title">Revenue Trend</div>
+                            <div class="chart-subtitle">Revenue per month, GBP, demo numbers</div>
+                        </div>
+                        <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="chart-header">
+                        <span class="chart-badge teal">BENCHMARKS</span>
+                        <div class="chart-title">Current month vs benchmarks</div>
+                        <div class="chart-subtitle">How the last 30 days stack up against typical targets</div>
+                    </div>
+                    <div class="drag-wrap"><div class="drag-scroll">
+                        <table class="recent-table" id="benchmarkTable">
+                            <thead><tr><th>Metric</th><th class="num">Current</th><th class="num">Last month</th><th>Benchmark</th><th>Status</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div></div>
+                </div>
+            </div>
+
+            <!-- ===== Traffic tab ===== -->
+            <div class="tab-section" id="tab-traffic" role="tabpanel" style="display:none">
+                <div class="kpi-grid">
+                    <div class="kpi-card better">
+                        <div class="kpi-label">Visits, month to date</div>
+                        <div class="kpi-value">5,120</div>
+                        <div class="kpi-change">170 avg per day &middot; <span class="up">&#9650; 9%</span> vs last month</div>
+                    </div>
+                    <div class="kpi-card cyan">
+                        <div class="kpi-label">Unique visitors</div>
+                        <div class="kpi-value">3,850</div>
+                        <div class="kpi-change">75.2% of all visits</div>
+                    </div>
+                    <div class="kpi-card better">
+                        <div class="kpi-label">Avg session</div>
+                        <div class="kpi-value">2m 40s</div>
+                        <div class="kpi-change">&middot; <span class="up">&#9650; 12s</span> vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Pages per visit</div>
+                        <div class="kpi-value">3.2</div>
+                        <div class="kpi-change">&middot; <span class="up">&#9650; 0.2</span> vs last month</div>
+                    </div>
+                </div>
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="chart-badge">30 DAYS</span>
+                            <div class="chart-title">Traffic</div>
+                            <div class="chart-subtitle">Visitors per day, last 30 days</div>
+                        </div>
+                        <div class="chart-container"><canvas id="trafficChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">Traffic Channels</div>
+                            <div class="chart-subtitle">This month vs last month</div>
+                        </div>
+                        <div class="chart-container"><canvas id="channelsChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Top Pages</div>
+                        <div class="chart-subtitle">Visits per page, last 30 days</div>
+                    </div>
+                    <div class="drag-wrap"><div class="drag-scroll">
+                        <table class="recent-table">
+                            <thead><tr><th>Page</th><th class="num">Visits</th><th class="num">Share</th><th class="num">Avg time</th></tr></thead>
+                            <tbody>
+                                <tr><td class="strong">/ (home)</td><td class="num">1,120</td><td class="num">21.9%</td><td class="num">2m 10s</td></tr>
+                                <tr><td class="strong">/free-course</td><td class="num">748</td><td class="num">14.6%</td><td class="num">3m 05s</td></tr>
+                                <tr><td class="strong">/articles/machinist-tips</td><td class="num">512</td><td class="num">10.0%</td><td class="num">2m 44s</td></tr>
+                                <tr><td class="strong">/pricing</td><td class="num">388</td><td class="num">7.6%</td><td class="num">1m 51s</td></tr>
+                                <tr><td class="strong">/about</td><td class="num">265</td><td class="num">5.2%</td><td class="num">2m 05s</td></tr>
+                            </tbody>
+                        </table>
+                    </div></div>
+                </div>
+            </div>
+
+            <!-- ===== Email tab ===== -->
+            <div class="tab-section" id="tab-email" role="tabpanel" style="display:none">
+                <div class="kpi-grid">
+                    <div class="kpi-card better">
+                        <div class="kpi-label">Subscribers</div>
+                        <div class="kpi-value">2,148</div>
+                        <div class="kpi-change">+64 new this month</div>
+                    </div>
+                    <div class="kpi-card cyan">
+                        <div class="kpi-label">Open rate, 30d</div>
+                        <div class="kpi-value">47.2%</div>
+                        <div class="kpi-change"><span class="up">&#9650; 1.3pp</span> vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Click rate, 30d</div>
+                        <div class="kpi-value">5.8%</div>
+                        <div class="kpi-change"><span class="up">&#9650; 0.3pp</span> vs last month</div>
+                    </div>
+                    <div class="kpi-card amber">
+                        <div class="kpi-label">Unsubscribes, 30d</div>
+                        <div class="kpi-value">8</div>
+                        <div class="kpi-change">0.4% of list &middot; healthy</div>
+                    </div>
+                </div>
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="chart-badge teal">CAMPAIGNS</span>
+                            <div class="chart-title">Campaign Performance</div>
+                            <div class="chart-subtitle">Open and click rate by month, last 6 months</div>
+                        </div>
+                        <div class="chart-container"><canvas id="chartEmailMonthly"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="chart-badge">12 MONTHS</span>
+                            <div class="chart-title">Email List Growth</div>
+                            <div class="chart-subtitle">Total subscribers over the last year</div>
+                        </div>
+                        <div class="chart-container"><canvas id="chartListGrowth"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Recent Campaigns</div>
+                        <div class="chart-subtitle">Latest email sends and results</div>
+                    </div>
+                    <div class="drag-wrap"><div class="drag-scroll">
+                        <table class="recent-table">
+                            <thead><tr><th>Campaign</th><th>Sent</th><th class="num">Open Rate</th><th class="num">Clicks</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr><td class="strong">October Offer</td><td>2,140</td><td class="num">48.1%</td><td class="num">112</td><td><span class="pill">Sent</span></td></tr>
+                                <tr><td class="strong">Autumn Roundup</td><td>2,096</td><td class="num">45.9%</td><td class="num">98</td><td><span class="pill">Sent</span></td></tr>
+                                <tr><td class="strong">New Course Launch</td><td>2,084</td><td class="num">52.3%</td><td class="num">143</td><td><span class="pill">Sent</span></td></tr>
+                                <tr><td class="strong">Weekly Digest</td><td>2,071</td><td class="num">41.7%</td><td class="num">71</td><td><span class="pill dim">Draft</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div></div>
+                </div>
+            </div>
+
+            <!-- ===== Sales tab ===== -->
+            <div class="tab-section" id="tab-sales" role="tabpanel" style="display:none">
+                <div class="kpi-grid">
+                    <div class="kpi-card better">
+                        <div class="kpi-label">Revenue, month to date</div>
+                        <div class="kpi-value">&pound;3,842</div>
+                        <div class="kpi-change">48 sales &middot; <span class="up">&#9650; 12%</span> vs last month</div>
+                    </div>
+                    <div class="kpi-card cyan">
+                        <div class="kpi-label">Sales, month to date</div>
+                        <div class="kpi-value">48</div>
+                        <div class="kpi-change"><span class="up">&#9650; 8</span> vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Conversion rate</div>
+                        <div class="kpi-value">2.4%</div>
+                        <div class="kpi-change">of visits, 30d</div>
+                    </div>
+                    <div class="kpi-card amber">
+                        <div class="kpi-label">Take home</div>
+                        <div class="kpi-value">85%</div>
+                        <div class="kpi-change">&pound;558 platform fees</div>
+                    </div>
+                </div>
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="chart-badge teal">MTD</span>
+                            <div class="chart-title">Sales by Source</div>
+                            <div class="chart-subtitle">Revenue share by channel, month to date</div>
+                        </div>
+                        <div class="chart-container"><canvas id="salesChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="chart-badge">30 DAYS</span>
+                            <div class="chart-title">Sales Funnel</div>
+                            <div class="chart-subtitle">Visit to sale, last 30 days</div>
+                        </div>
+                        <div class="chart-container"><canvas id="chartSalesFunnel"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Recent Sales</div>
+                        <div class="chart-subtitle">Most recent orders, demo rows</div>
+                    </div>
+                    <div class="drag-wrap"><div class="drag-scroll">
+                        <table class="recent-table">
+                            <thead><tr><th>Date</th><th>Product</th><th>Source</th><th class="num">Amount</th></tr></thead>
+                            <tbody>
+                                <tr><td class="strong">Oct 13</td><td>Course Bundle</td><td>Organic</td><td class="num">&pound;197</td></tr>
+                                <tr><td class="strong">Oct 12</td><td>Starter Course</td><td>Email</td><td class="num">&pound;47</td></tr>
+                                <tr><td class="strong">Oct 11</td><td>Course Bundle</td><td>Organic</td><td class="num">&pound;197</td></tr>
+                                <tr><td class="strong">Oct 9</td><td>One-to-One Session</td><td>Direct</td><td class="num">&pound;95</td></tr>
+                                <tr><td class="strong">Oct 8</td><td>Course Bundle</td><td>Email</td><td class="num">&pound;197</td></tr>
+                                <tr><td class="strong">Oct 7</td><td>Starter Course</td><td>Social</td><td class="num">&pound;47</td></tr>
+                            </tbody>
+                        </table>
+                    </div></div>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                Graphite is one of the standard looks for Xenium Designs dashboards. See also
+                <a href="theme-amethyst.html">Amethyst</a>, <a href="theme-lapis.html">Lapis</a> and
+                <a href="theme-sandstone.html">Sandstone</a>,
+                or <a href="../contact.html">get in touch</a> about a dashboard of your own.
+            </div>
+        </main>
+
+        <!-- ===== Right rail: Sales revenue ===== -->
+        <aside class="rail">
+            <div class="rail-card">
+                <h3>Sales revenue</h3>
+                <div class="rail-row">
+                    <div class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 11 3.8H4v7l9.6 9.6a2 2 0 0 0 2.8 0l4.2-4.2a2 2 0 0 0 0-2.8Z"/><circle cx="8" cy="7.8" r="0.5"/></svg></div>
+                    <div>
+                        <div class="rail-num">230k</div>
+                        <div class="rail-label">Sales</div>
+                    </div>
+                </div>
+                <div class="rail-row">
+                    <div class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
+                    <div>
+                        <div class="rail-num">8,549</div>
+                        <div class="rail-label">Customers</div>
+                    </div>
+                </div>
+                <div class="rail-row">
+                    <div class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+                    <div>
+                        <div class="rail-num">1,423</div>
+                        <div class="rail-label">Products</div>
+                    </div>
+                </div>
+                <div class="rail-row">
+                    <div class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l3 6-8 12L4 9l3-6Z"/><path d="M4 9h16"/></svg></div>
+                    <div>
+                        <div class="rail-num">&pound;9,745</div>
+                        <div class="rail-label">Revenue</div>
+                    </div>
+                </div>
+                <div class="rail-note">All figures are demo numbers for illustration.</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        /* theme chart defaults (Graphite) */
+        Chart.defaults.color = '#a6acb6';
+        Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.plugins.legend.labels.boxWidth = 10;
+        Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+        /* ---------- demo data (all invented, for illustration only) ---------- */
+        const MONTHS = ['Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
+        const REV_12MO = [2100, 2450, 1980, 2600, 2900, 2750, 3100, 2950, 3400, 3600, 3520, 3842];
+        const VISITS_30D = [120,140,125,160,180,150,135,145,170,190,155,140,128,165,185,175,152,138,167,192,178,156,132,149,173,158,144,171,188,163];
+        const FUNNEL_STAGES = ['Visits','Product views','Add to cart','Checkout','Sales'];
+        const FUNNEL_VALUES = [5120, 1840, 210, 96, 48];
+        const EMAIL_6MO = ['May','Jun','Jul','Aug','Sep','Oct'];
+        const OPEN_6MO = [41.9, 44.1, 42.7, 45.6, 46.3, 47.2];
+        const CLICK_6MO = [4.9, 5.2, 5.0, 5.5, 5.7, 5.8];
+        const LIST_12MO = [1120, 1188, 1240, 1301, 1389, 1502, 1655, 1759, 1882, 1965, 2084, 2148];
+        const BENCH = [
+            ['Visits, 30d', '5,120', '4,700', '5,000+', 'good'],
+            ['Conversion rate', '2.4%', '2.2%', '2-4%', 'good'],
+            ['Avg order value', '\u00a380.04', '\u00a376.10', '\u00a360-120', 'good'],
+            ['Email open rate', '47.2%', '45.9%', '40%+', 'good'],
+            ['Email click rate', '5.8%', '5.5%', '3-5%', 'good'],
+            ['New subscribers', '64', '58', '40+', 'good'],
+            ['Refund rate', '1.2%', '1.0%', 'under 2%', 'watch'],
+            ['Returning visitors', '22%', '26%', '25%+', 'watch']
+        ];
+
+        window._pdfChartRefs = {};
+        const chartRefs = window._pdfChartRefs;
+
+        function gradFill(ctx, hex) {
+            const g = ctx.createLinearGradient(0, 0, 0, 260);
+            g.addColorStop(0, hex + '55');
+            g.addColorStop(1, hex + '00');
+            return g;
+        }
+
+        function axes() {
+            return {
+                x: { grid: { display: false }, ticks: { color: '#a6acb6', font: { size: 10 } } },
+                y: { grid: { color: 'rgba(255,255,255,0.07)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#a6acb6', font: { size: 10 } } }
+            };
+        }
+
+        /* chart configs get created lazily per tab so hidden canvases never size to 0 */
+        const chartBuild = {
+            kpis: function () {
+                chartRefs.revenue = new Chart(document.getElementById('revenueChart'), {
+                    type: 'line',
+                    data: { labels: MONTHS, datasets: [{
+                        label: 'Revenue', data: REV_12MO,
+                        borderColor: '#2fb5aa', backgroundColor: '#2fb5aa55',
+                        fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false, scales: axes() }
+                });
+                const statusPill = { good: '<span class="pill">Good</span>', watch: '<span class="pill dim" style="color:#c9a86a">Watch</span>' };
+                document.getElementById('benchmarkTable').querySelector('tbody').innerHTML = BENCH.map(function (r) {
+                    return '<tr><td class="strong">' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td>' + r[3] + '</td><td>' + statusPill[r[4]] + '</td></tr>';
+                }).join('');
+            },
+            traffic: function () {
+                chartRefs.traffic = new Chart(document.getElementById('trafficChart'), {
+                    type: 'line',
+                    data: { labels: VISITS_30D.map(function (_, i) { return i + 1; }), datasets: [{
+                        label: 'Visitors', data: VISITS_30D,
+                        borderColor: '#5bbcb9', backgroundColor: '#5bbcb955',
+                        fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false,
+                        scales: { x: { grid: { display: false }, ticks: { color: '#a6acb6', font: { size: 10 }, maxTicksLimit: 10 } },
+                                  y: { grid: { color: 'rgba(255,255,255,0.07)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#a6acb6', font: { size: 10 } } } } }
+                });
+                chartRefs.channels = new Chart(document.getElementById('channelsChart'), {
+                    type: 'bar',
+                    data: { labels: ['Organic Search','Direct','Social','Referral','Email'], datasets: [
+                        { label: 'This month', data: [2600, 1150, 620, 430, 320], backgroundColor: '#2fb5aa', borderRadius: 4 },
+                        { label: 'Last month', data: [2350, 1080, 575, 460, 290], backgroundColor: '#e8eaee', borderRadius: 4 }
+                    ]},
+                    options: { maintainAspectRatio: false, scales: axes() }
+                });
+            },
+            email: function () {
+                chartRefs.emailMonthly = new Chart(document.getElementById('chartEmailMonthly'), {
+                    type: 'bar',
+                    data: { labels: EMAIL_6MO, datasets: [
+                        { label: 'Open rate', data: OPEN_6MO, backgroundColor: '#2fb5aa', borderRadius: 4 },
+                        { label: 'Click rate', data: CLICK_6MO, backgroundColor: '#e8eaee', borderRadius: 4 }
+                    ]},
+                    options: { maintainAspectRatio: false,
+                        scales: { x: { grid: { display: false }, ticks: { color: '#a6acb6', font: { size: 10 } } },
+                                  y: { grid: { color: 'rgba(255,255,255,0.07)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#a6acb6', font: { size: 10 }, callback: function (v) { return v + '%'; } } } } }
+                });
+                chartRefs.listGrowth = new Chart(document.getElementById('chartListGrowth'), {
+                    type: 'line',
+                    data: { labels: MONTHS, datasets: [{
+                        label: 'Subscribers', data: LIST_12MO,
+                        borderColor: '#2fb5aa', backgroundColor: '#2fb5aa55',
+                        fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false, scales: axes() }
+                });
+            },
+            sales: function () {
+                chartRefs.sales = new Chart(document.getElementById('salesChart'), {
+                    type: 'doughnut',
+                    data: { labels: ['Students','Website','Affiliate','Other'], datasets: [{
+                        data: [58, 24, 12, 6],
+                        backgroundColor: ['#2fb5aa', '#e8eaee', '#8f96a1', '#c9a86a'],
+                        borderColor: '#2d3039', borderWidth: 2
+                    }]},
+                    options: { maintainAspectRatio: false, cutout: '62%',
+                        plugins: { legend: { position: 'bottom', labels: { color: '#a6acb6', font: { size: 11 } } } } }
+                });
+                chartRefs.funnel = new Chart(document.getElementById('chartSalesFunnel'), {
+                    type: 'bar',
+                    data: { labels: FUNNEL_STAGES, datasets: [{
+                        label: 'People', data: FUNNEL_VALUES,
+                        backgroundColor: '#2fb5aa', borderRadius: 4
+                    }]},
+                    options: { maintainAspectRatio: false, indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { grid: { color: 'rgba(255,255,255,0.07)' }, border: { display: false }, beginAtZero: true, ticks: { color: '#a6acb6', font: { size: 10 } } },
+                                  y: { grid: { display: false }, border: { display: false }, ticks: { color: '#a6acb6', font: { size: 10 } } } } }
+                });
+            }
+        };
+
+        /* lazy-create a tab's charts the first time its tab is shown */
+        const builtTabs = {};
+        function buildTabCharts(name) {
+            if (builtTabs[name] || !chartBuild[name]) return;
+            builtTabs[name] = true;
+            chartBuild[name]();
+        }
+
+        /* ---------- tab switching via the sidebar (Dashboard / Traffic / Email / Sales) ---------- */
+        function showTab(name) {
+            const TAB_NAMES = ['kpis', 'traffic', 'email', 'sales'];
+            if (TAB_NAMES.indexOf(name) === -1) name = 'kpis';
+            ['kpis', 'traffic', 'email', 'sales'].forEach(function (tabName) {
+                const section = document.getElementById('tab-' + tabName);
+                if (section) section.style.display = (tabName === name) ? '' : 'none';
+            });
+            document.querySelectorAll('.side-nav .side-item').forEach(function (btn) {
+                const on = btn.dataset.tab === name;
+                btn.classList.toggle('active', on);
+                btn.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            buildTabCharts(name);
+            /* charts created while hidden can come out at 0 size, force a resize pass */
+            requestAnimationFrame(function () {
+                Object.values(chartRefs).forEach(function (c) {
+                    try { c.resize(); } catch (e) {}
+                });
+            });
+            try { sessionStorage.setItem('xd_theme_demo_tab', name); } catch (e) {}
+        }
+
+        /* keyboard support on the sidebar nav: left and right arrows move between tabs */
+        document.querySelectorAll('.side-nav .side-item').forEach(function (btn, i, all) {
+            btn.addEventListener('keydown', function (e) {
+                let next = null;
+                if (e.key === 'ArrowRight') next = all[(i + 1) % all.length];
+                if (e.key === 'ArrowLeft') next = all[(i - 1 + all.length) % all.length];
+                if (next) { next.focus(); next.click(); }
+            });
+        });
+
+        /* ---------- drag-to-scroll tables (Xenium dashboard standard) ---------- */
+        function makeDraggable(el) {
+            if (el._draggable) return;
+            el._draggable = true;
+            let isDown = false, startX = 0, startLeft = 0, moved = false;
+            el.addEventListener('mousedown', function (e) {
+                if (el.scrollWidth <= el.clientWidth + 4) return;
+                isDown = true; moved = false;
+                startX = e.pageX; startLeft = el.scrollLeft;
+                el.classList.add('dragging');
+            });
+            el.addEventListener('mousemove', function (e) {
+                if (!isDown) return;
+                const dx = e.pageX - startX;
+                if (Math.abs(dx) > 4) moved = true;
+                el.scrollLeft = startLeft - dx;
+            });
+            ['mouseup', 'mouseleave'].forEach(function (ev) {
+                el.addEventListener(ev, function () {
+                    isDown = false; el.classList.remove('dragging');
+                });
+            });
+            el.addEventListener('click', function (e) {
+                if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+            }, true);
+        }
+        function updateDragFade(el) {
+            const wrap = el.closest('.drag-wrap');
+            if (!wrap) return;
+            const more = el.scrollWidth > el.clientWidth + 4;
+            wrap.classList.toggle('has-more', more);
+            wrap.classList.toggle('show-fade', more && el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+        }
+        function initDragScroll(root) {
+            (root || document).querySelectorAll('.drag-scroll').forEach(function (el) {
+                makeDraggable(el);
+                updateDragFade(el);
+                if (!el._fadeBound) {
+                    el._fadeBound = true;
+                    el.addEventListener('scroll', function () { updateDragFade(el); });
+                    window.addEventListener('resize', function () { updateDragFade(el); });
+                }
+            });
+        }
+        initDragScroll();
+
+        /* restore last tab or start on Dashboard */
+        let startTab = 'kpis';
+        try { startTab = sessionStorage.getItem('xd_theme_demo_tab') || startTab; } catch (e) {}
+        showTab(startTab);
+        requestAnimationFrame(function () { initDragScroll(); });
+
+        /* ---------- printer-friendly PDF mode (applies a light look for the capture) ---------- */
+        const RECOLOR_MAP = {
+            '#2fb5aa': '#4a86c6', '#5bbcb9': '#9cc4de', '#6fc796': '#2dbe4c',
+            '#c9a86a': '#b98a3c', '#d67f8c': '#d63232', '#e8eaee': '#9cc4de',
+            '#8f96a1': '#9ba7b3', '#5f6773': '#6a7280', '#2d3039': '#ffffff',
+            '#262930': '#ffffff'
+        };
+        const RECOLOR_MAP_BACK = {};
+        Object.keys(RECOLOR_MAP).forEach(function (k) { RECOLOR_MAP_BACK[RECOLOR_MAP[k]] = k; });
+
+        function recolorValue(val, map) {
+            if (typeof val === 'string') {
+                const bare = val.slice(0, 7);
+                if (map[bare]) {
+                    if (val.length > 7) { /* keep alpha suffix when present */
+                        return map[bare] + val.slice(7);
+                    }
+                    return map[val];
+                }
+            } else if (Array.isArray(val)) {
+                return val.map(function (v) { return recolorValue(v, map); });
+            }
+            return val;
+        }
+
+        window._recolourPdfCharts = function (mode) {
+            const light = mode === 'light';
+            const map = light ? RECOLOR_MAP : RECOLOR_MAP_BACK;
+            Object.values(chartRefs).forEach(function (ch) {
+                ch.data.datasets.forEach(function (ds) {
+                    if (ds.borderColor) ds.borderColor = recolorValue(ds.borderColor, map);
+                    if (ds.backgroundColor) ds.backgroundColor = recolorValue(ds.backgroundColor, map);
+                });
+                if (ch.options && ch.options.scales) {
+                    Object.values(ch.options.scales).forEach(function (ax) {
+                        if (ax.ticks) ax.ticks.color = light ? '#6a7280' : '#a6acb6';
+                        if (ax.grid && ax.grid.color && typeof ax.grid.color === 'string') {
+                            ax.grid.color = light ? 'rgba(51,65,79,0.10)' : 'rgba(255,255,255,0.07)';
+                        }
+                    });
+                }
+                ch.update('none');
+            });
+        };
+
+        window._pdfPrintOn = async function () {
+            const r = document.documentElement.style;
+            window._pdfSavedInline = ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
+                .filter(function (k) { return r.getPropertyValue(k) !== ''; });
+            r.setProperty('--bg-primary', '#ffffff'); r.setProperty('--bg-card', '#ffffff');
+            r.setProperty('--bg-card-hover', '#f7f7f7'); r.setProperty('--border-color', '#b9bfc6');
+            r.setProperty('--text-primary', '#33414f'); r.setProperty('--text-secondary', '#6a7280');
+            r.setProperty('--text-muted', '#8a929b');
+            /* make sure the visible tab's charts exist before the capture (they build lazily per tab) */
+            const visible = document.querySelector('.tab-section:not([style*="display:none"])');
+            if (visible) {
+                Object.keys(chartBuild).forEach(function (k) { buildTabCharts(k); });
+            }
+            window._recolourPdfCharts('light');
+            await new Promise(function (r2) { setTimeout(r2, 400); });
+        };
+        window._pdfPrintOff = async function () {
+            const r = document.documentElement.style;
+            if (window._pdfSavedInline && window._pdfSavedInline.length) {
+                window._pdfSavedInline.forEach(function (k) { r.removeProperty(k); });
+            } else {
+                ['--bg-primary','--bg-card','--bg-card-hover','--border-color','--text-primary','--text-secondary','--text-muted']
+                    .forEach(function (k) { r.removeProperty(k); });
+            }
+            window._recolourPdfCharts('dark');
+            await new Promise(function (r2) { setTimeout(r2, 200); });
+        };
+    </script>
+</body>
+</html>
